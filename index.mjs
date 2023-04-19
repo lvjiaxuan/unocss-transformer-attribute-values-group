@@ -1,5 +1,5 @@
 export default {
-  name: 'transformer-attribute-values-group',
+  name: 'unocss-transformer-attribute-values-group',
   enforce: 'pre',
   transform(code) {
     const nameRegexStr = '[\\w-_]+'

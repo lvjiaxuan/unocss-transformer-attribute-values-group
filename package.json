@@ -1,6 +1,6 @@
 {
   "private": false,
-  "name": "transformer-attribute-values-group",
+  "name": "unocss-transformer-attribute-values-group",
   "version": "0.1.0",
   "description": "Attribute values group transformer for UnoCSS.",
   "keywords": [
@@ -18,7 +18,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lvjiaxuan/transformer-attribute-values-group"
+    "url": "https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group"
   },
   "devDependencies": {
     "@unocss/core": "^0.51.4",
