@@ -2,18 +2,24 @@
   "private": false,
   "name": "transformer-attribute-values-group",
   "version": "0.0.0",
-  "description": "Attribute values group transformer for UnoCSS",
+  "description": "Attribute values group transformer for UnoCSS.",
   "keywords": [
     "unocss",
     "unocss-transformer"
   ],
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "release": "lvr --no-push",
+    "prepublishOnly": "pnpm test"
   },
   "main": "index.mjs",
   "types": "index.d.ts",
   "author": "lvjiaxuan <471501748@qq.com> (https://github.com/lvjiaxuan)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lvjiaxuan/transformer-attribute-values-group"
+  },
   "devDependencies": {
     "@unocss/core": "^0.51.4",
     "jest": "^29.5.0",
