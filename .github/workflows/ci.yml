@@ -16,6 +16,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
         with:
           node-version: 18
+          registry-url: https://registry.npmjs.org
 
       - uses: pnpm/action-setup@v2
         with:
@@ -24,7 +25,7 @@ jobs:
       - run: pnpm i -g @antfu/ni
 
       - name: Release and Publish
-        run: nlx lvr release & (nci && pnpm publish)
+        run: nlx lvr release & (nci && pnpm publish --no-git-checks)
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 

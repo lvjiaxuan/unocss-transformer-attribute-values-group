@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "transformer-attribute-values-group",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Attribute values group transformer for UnoCSS.",
   "keywords": [
     "unocss",
