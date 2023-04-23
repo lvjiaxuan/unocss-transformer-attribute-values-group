@@ -7,8 +7,14 @@ export default {
 
     const attributeValuesGroupRegex = new RegExp(`(&\\[${ nameRegexStr }=)\\((${ valueRegexStr })\\)`, 'gm')
     const dataAttributeValuesGroupRegex = new RegExp(`(data-\\[${ nameRegexStr }=)\\((${ valueRegexStr })\\)\\]:(${ nameRegexStr }|\\(${ valueRegexStr }\\))`, 'gm')
+    // Remove the newline in parentheses
+    const removeRegex = new RegExp(`\\]:\\((${ valueRegexStr })\\)`, 'gm')
 
-    const str = code.toString().replace(
+    const str = code.toString()
+    .replace(
+      removeRegex,
+      (from, variant) => `]:(${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') })`
+    ).replace(
       attributeValuesGroupRegex,
       (from, pre, values) => values
         .split(/\s/g)
@@ -20,7 +26,7 @@ export default {
       (from, pre, values, variant) => values
         .split(/\s/g)
         .filter(Boolean)
-        .map(i => `${ pre }${i}]:${variant}`)
+        .map(i => `${ pre }${ i }]:${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') }`)
         .join(' ')
     )
 

@@ -25,6 +25,11 @@ describe('group attribute values', () => {
     expect(multi).toMatchInlineSnapshot('"[&[type=number],&[type=text],&[aa=bb],&[aa=cc]]:(c-red m-1)"')
   })
 
+  it('with newline', () => {
+    const newline = main('[&[type=(number\n text)],&[aa=(bb cc)]]:(\n  c-red \n     m-1\n     p-1\n  )')
+    expect(newline).toMatchInlineSnapshot('"[&[type=number],&[type=text],&[aa=bb],&[aa=cc]]:( c-red m-1 p-1 )"')
+  })
+
   it('empty group', () => {
     const empty = main('[&[type=()]]:p-1')
     expect(empty).toMatchInlineSnapshot('"[&[type=()]]:p-1"')
@@ -45,6 +50,11 @@ describe('group data-attributes values', () => {
   it('with variant group', () => {
     const multi = main('data-[xxx=(foo bar)]:(p-1 m-1)')
     expect(multi).toMatchInlineSnapshot('"data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1)"')
+  })
+
+  it('with newline', () => {
+    const newline = main('data-[xxx=(foo\n bar)]:(\n  c-red \n     m-1\n     p-1\n  )')
+    expect(newline).toMatchInlineSnapshot('"data-[xxx=foo]:( c-red m-1 p-1 ) data-[xxx=bar]:( c-red m-1 p-1 )"')
   })
 
   it('empty', () => {
