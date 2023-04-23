@@ -23,3 +23,19 @@ transformed like:
 ```
 
 [tests](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/blob/main/index.test.js) for More Details
+
+> **Note**
+> It is better to be placed ahead of `transformerVariantGroup` .
+> ```
+> import avg from 'unocss-transformer-attribute-values-group'
+> 
+> {
+>   ...
+>   transformers: [
+>     avg,
+>     transformerVariantGroup(),
+>   ]
+>   ...
+> }
+> ```
+>
