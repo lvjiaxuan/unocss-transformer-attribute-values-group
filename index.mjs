@@ -1,3 +1,5 @@
+import MagicString from 'magic-string'
+
 export default {
   name: 'unocss-transformer-attribute-values-group',
   enforce: 'pre',
@@ -30,8 +32,10 @@ export default {
           .join(' ')
       )
 
-    if (typeof code !== 'string' && code.length())
-      code.overwrite(0, code.toString().length, str)
+    if (typeof code !== 'string' && code.length()) {
+      code = new MagicString(code.toString()) // hack? rewrite original magic string
+      code.overwrite(0, code.length(), str)
+    }
 
     return str
   },
