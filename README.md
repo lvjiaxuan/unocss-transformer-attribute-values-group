@@ -1,7 +1,7 @@
 # Usage
 
 ```vue
-<scripts setup>
+<scripts setup lang="ts">
 const type = ref<'number' | 'text'>()
 const name = ref<'jack' | 'tom'>()
 
@@ -22,20 +22,4 @@ transformed like:
 <div class="data-[name=jack]:c-red data-[name=tom]:c-red" />
 ```
 
-[tests](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/blob/main/index.test.js) for More Details
-
-> **Note**
-> It is better to be placed ahead of `transformerVariantGroup` .
-> ```
-> import avg from 'unocss-transformer-attribute-values-group'
-> 
-> {
->   ...
->   transformers: [
->     avg,
->     transformerVariantGroup(),
->   ]
->   ...
-> }
-> ```
->
+[tests](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/blob/main/index.test.js) for more details.

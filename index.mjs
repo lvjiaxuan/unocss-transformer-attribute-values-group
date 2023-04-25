@@ -11,27 +11,27 @@ export default {
     const removeRegex = new RegExp(`\\]:\\((${ valueRegexStr })\\)`, 'gm')
 
     const str = code.toString()
-    .replace(
-      removeRegex,
-      (from, variant) => `]:(${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') })`
-    ).replace(
-      attributeValuesGroupRegex,
-      (from, pre, values) => values
-        .split(/\s/g)
-        .filter(Boolean)
-        .map((v, i, a) => `${pre + v}${ i === a.length - 1 ? '' : ']' }`)
-        .join(',')
-    ).replace(
-      dataAttributeValuesGroupRegex,
-      (from, pre, values, variant) => values
-        .split(/\s/g)
-        .filter(Boolean)
-        .map(i => `${ pre }${ i }]:${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') }`)
-        .join(' ')
-    )
+      .replace(
+        removeRegex,
+        (from, variant) => `]:(${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') })`
+      ).replace(
+        attributeValuesGroupRegex,
+        (from, pre, values) => values
+          .split(/\s/g)
+          .filter(Boolean)
+          .map((v, i, a) => `${pre + v}${ i === a.length - 1 ? '' : ']' }`)
+          .join(',')
+      ).replace(
+        dataAttributeValuesGroupRegex,
+        (from, pre, values, variant) => values
+          .split(/\s/g)
+          .filter(Boolean)
+          .map(i => `${ pre }${ i }]:${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') }`)
+          .join(' ')
+      )
 
     if (typeof code !== 'string' && code.length())
-      code.overwrite(0, code.length(), str)
+      code.overwrite(0, code.original.length, str)
 
     return str
   },
