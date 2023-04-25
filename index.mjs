@@ -31,7 +31,7 @@ export default {
       )
 
     if (typeof code !== 'string' && code.length())
-      code.overwrite(0, code.original.length, str)
+      code.overwrite(0, code.toString().length, str)
 
     return str
   },
