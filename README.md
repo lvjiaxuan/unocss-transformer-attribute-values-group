@@ -1,3 +1,5 @@
+[![npm](https://img.shields.io/npm/v/unocss-transformer-attribute-values-group)](https://www.npmjs.com/package/unocss-transformer-attribute-values-group)
+
 # Usage
 
 ```vue
