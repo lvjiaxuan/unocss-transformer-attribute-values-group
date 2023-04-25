@@ -1,6 +1,17 @@
 # Changelog
 
-Tag ranges `v0.1.0...v0.1.2` (3). [All GitHub Releases](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/releases).
+Tag ranges `v0.1.0...v0.1.3` (4). [All GitHub Releases](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/releases).
+
+## v0.1.3 <sub>(2023-04-25)</sub>
+[Compare changes](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/compare/v0.1.2...v0.1.3)
+
+### &nbsp;&nbsp;&nbsp;🐛 Fixes
+
+- use `code.original.length` &nbsp;-&nbsp; by @lvjiaxuan [<samp>(28f8f)</samp>](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/commit/28f8f46)
+
+### &nbsp;&nbsp;&nbsp;📝 Documentation
+
+- update &nbsp;-&nbsp; by @lvjiaxuan [<samp>(72bf7)</samp>](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/commit/72bf7d6)
 
 ## v0.1.2 <sub>(2023-04-23)</sub>
 [Compare changes](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/compare/v0.1.1...v0.1.2)
