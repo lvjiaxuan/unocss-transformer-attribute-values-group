@@ -21,7 +21,7 @@
     "url": "https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group"
   },
   "devDependencies": {
-    "@unocss/core": "^0.51.4",
+    "@unocss/core": "^0.51.8",
     "jest": "^29.5.0",
     "vitest": "^0.30.1"
   }

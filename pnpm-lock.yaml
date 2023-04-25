@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 devDependencies:
   '@unocss/core':
-    specifier: ^0.51.4
-    version: 0.51.4
+    specifier: ^0.51.8
+    version: 0.51.8
   jest:
     specifier: ^29.5.0
     version: 29.5.0
@@ -914,8 +914,8 @@ packages:
       '@types/yargs-parser': 21.0.0
     dev: true
 
-  /@unocss/core@0.51.4:
-    resolution: {integrity: sha512-glPBN989gJNNVzjulH6NlLAekBLuZbsFRIDqwZ1ZaoWY6teu8Z6uo3pqFCy+ibjxZSEha77BcnKfDzd2Hccsdw==}
+  /@unocss/core@0.51.8:
+    resolution: {integrity: sha512-myHRKBphEN3h0OnsUhg2JaFKjFGfqF/jmmzZCCMNU5UmxbheZomXANNLYXVgEP6LHvd4xAF0DEzrOBcDPLf0HQ==}
     dev: true
 
   /@vitest/expect@0.30.1:
