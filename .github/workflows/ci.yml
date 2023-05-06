@@ -22,10 +22,8 @@ jobs:
         with:
           version: 8
 
-      - run: pnpm i -g @antfu/ni
-
       - name: Release and Publish
-        run: nlx lvr release & (nci && pnpm publish --no-git-checks)
+        run: pnpm dlx lvr release & (pnpm i && pnpm publish --no-git-checks)
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
