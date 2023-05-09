@@ -10,7 +10,7 @@
   "scripts": {
     "test": "vitest",
     "release": "lvr --no-push",
-    "build:cjs": "rollup index.mjs --file=index.cjs --format=cjs",
+    "build:cjs": "rollup index.mjs --file=index.cjs --format=cjs --external=magic-string",
     "prepublishOnly": "pnpm test && pnpm build:cjs"
   },
   "main": "index.cjs",
