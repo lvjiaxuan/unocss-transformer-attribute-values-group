@@ -12,6 +12,9 @@ devDependencies:
   jest:
     specifier: ^29.5.0
     version: 29.5.0
+  rollup:
+    specifier: ^3.21.5
+    version: 3.21.5
   vitest:
     specifier: ^0.31.0
     version: 0.31.0
@@ -2430,8 +2433,8 @@ packages:
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
 
-  /rollup@3.20.5:
-    resolution: {integrity: sha512-Mx6NE3nLPIP6a9ReV4dTPOYYmDiyarJNtSbc37Jx0jvh8SHySoFPgyZAp9aDP3LnYvaJOrz+fclcwq3oZDzlnA==}
+  /rollup@3.21.5:
+    resolution: {integrity: sha512-a4NTKS4u9PusbUJcfF4IMxuqjFzjm6ifj76P54a7cKnvVzJaG12BLVR+hgU2YDGHzyMMQNxLAZWuALsn8q2oQg==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
@@ -2715,7 +2718,7 @@ packages:
       esbuild: 0.17.17
       postcss: 8.4.22
       resolve: 1.22.2
-      rollup: 3.20.5
+      rollup: 3.21.5
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
