@@ -1,3 +1,3 @@
 import type { SourceCodeTransformer } from '@unocss/core'
-const transformer: SourceCodeTransformer
+declare const transformer: SourceCodeTransformer
 export default transformer
