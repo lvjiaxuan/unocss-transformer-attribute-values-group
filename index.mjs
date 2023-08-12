@@ -15,21 +15,21 @@ export default {
     const str = code.toString()
       .replace(
         removeRegex,
-        (from, variant) => `]:(${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') })`
+        (from, variant) => `]:(${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') })`,
       ).replace(
         attributeValuesGroupRegex,
         (from, pre, values) => values
           .split(/\s/g)
           .filter(Boolean)
-          .map((v, i, a) => `${pre + v}${ i === a.length - 1 ? '' : ']' }`)
-          .join(',')
+          .map((v, i, a) => `${ pre + v }${ i === a.length - 1 ? '' : ']' }`)
+          .join(','),
       ).replace(
         dataAttributeValuesGroupRegex,
         (from, pre, values, variant) => values
           .split(/\s/g)
           .filter(Boolean)
           .map(i => `${ pre }${ i }]:${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') }`)
-          .join(' ')
+          .join(' '),
       )
 
     if (typeof code !== 'string' && code.length()) {

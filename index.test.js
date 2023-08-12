@@ -1,5 +1,5 @@
 import transformer from './index'
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 const main = transformer.transform
 
@@ -10,7 +10,7 @@ describe('group attribute values', () => {
     expect(base).toMatchInlineSnapshot('"[&[type=number],&[type=text]]:c-red"')
   })
 
-  it('multi',() => {
+  it('multi', () => {
     const multi = main('[&[type=(number text)]]:c-red [&[size=(large small middle)]]:p-1')
     expect(multi).toMatchInlineSnapshot('"[&[type=number],&[type=text]]:c-red [&[size=large],&[size=small],&[size=middle]]:p-1"')
   })
@@ -62,10 +62,8 @@ describe('group data-attributes values', () => {
     expect(empty).toMatchInlineSnapshot('"data-[xxx=()]:p-1"')
   })
 
-  it('more', () => {
-    expect(main('data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1'))
-      .toMatchInlineSnapshot('"data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1) data-[yyy=aa]:p-1"')
-  })
+  it('more', () => expect(main('data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1'))
+    .toMatchInlineSnapshot('"data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1) data-[yyy=aa]:p-1"'))
 })
 
 it('together', () => {

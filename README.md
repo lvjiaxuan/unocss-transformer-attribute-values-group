@@ -13,8 +13,14 @@ function changeTypeAndName() {
 </scripts>
 
 <template>
-  <input :type="type" class="[&[type=(number text)]]:c-red" />
-  <div :data-name="name"  class="data-[name=(jack tom)]:c-red" />
+  <input
+    :type="type"
+    class="[&[type=(number text)]]:c-red"
+  >
+  <div
+    :data-name="name"
+    class="data-[name=(jack tom)]:c-red"
+  />
 </template>
 ```
 
