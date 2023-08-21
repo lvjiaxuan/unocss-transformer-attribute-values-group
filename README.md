@@ -3,14 +3,14 @@
 # Usage
 
 ```vue
-<scripts setup lang="ts">
+<script setup lang="ts">
 const type = ref<'number' | 'text'>()
 const name = ref<'jack' | 'tom'>()
 
 function changeTypeAndName() {
   // ......
 }
-</scripts>
+</script>
 
 <template>
   <input
