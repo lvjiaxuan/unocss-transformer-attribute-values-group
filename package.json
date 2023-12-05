@@ -17,8 +17,8 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "require": "./index.cjs",
-      "import": "./index.mjs"
+      "import": "./index.mjs",
+      "require": "./index.cjs"
     }
   },
   "main": "index.cjs",
@@ -32,14 +32,14 @@
     "prepublishOnly": "pnpm test && pnpm build:cjs"
   },
   "dependencies": {
-    "@unocss/core": "^0.55.7",
-    "magic-string": "^0.30.3"
+    "@unocss/core": "^0.58.0",
+    "magic-string": "^0.30.5"
   },
   "devDependencies": {
-    "@lvjiaxuan/eslint-plugin": "^0.16.0",
-    "eslint": "^8.49.0",
-    "jest": "^29.6.4",
-    "rollup": "^3.29.1",
-    "vitest": "^0.34.4"
+    "@lvjiaxuan/eslint-plugin": "^0.20.0",
+    "eslint": "^8.55.0",
+    "jest": "^29.7.0",
+    "rollup": "^4.6.1",
+    "vitest": "^1.0.1"
   }
 }

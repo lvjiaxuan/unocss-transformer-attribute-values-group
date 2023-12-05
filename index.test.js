@@ -1,5 +1,5 @@
-import transformer from './index'
 import { describe, expect, it } from 'vitest'
+import transformer from './index'
 
 const main = transformer.transform
 

@@ -1,7 +1,8 @@
 {
-  "include": ["index.d.ts"],
   "compilerOptions": {
     "target": "ESNext",
-    "moduleResolution": "nodenext"
-  }
+    "moduleResolution": "Bundler",
+    "strictNullChecks": true
+  },
+  "include": ["index.d.ts"]
 }
