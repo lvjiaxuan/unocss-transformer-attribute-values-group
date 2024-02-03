@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "ESNext",
-    "moduleResolution": "Bundler",
-    "strictNullChecks": true
-  },
-  "include": ["index.d.ts"]
-}

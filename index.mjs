@@ -7,28 +7,28 @@ export default {
     const nameRegexStr = '[\\w-_]+'
     const valueRegexStr = '[\\w-_\\s]+'
 
-    const attributeValuesGroupRegex = new RegExp(`(&\\[${ nameRegexStr }=)\\((${ valueRegexStr })\\)`, 'gm')
-    const dataAttributeValuesGroupRegex = new RegExp(`(data-\\[${ nameRegexStr }=)\\((${ valueRegexStr })\\)\\]:(${ nameRegexStr }|\\(${ valueRegexStr }\\))`, 'gm')
+    const attributeValuesGroupRegex = new RegExp(`(&\\[${nameRegexStr}=)\\((${valueRegexStr})\\)`, 'gm')
+    const dataAttributeValuesGroupRegex = new RegExp(`(data-\\[${nameRegexStr}=)\\((${valueRegexStr})\\)\\]:(${nameRegexStr}|\\(${valueRegexStr}\\))`, 'gm')
     // Remove the newline in parentheses
-    const removeRegex = new RegExp(`\\]:\\((${ valueRegexStr })\\)`, 'gm')
+    const removeRegex = new RegExp(`\\]:\\((${valueRegexStr})\\)`, 'gm')
 
     const str = code.toString()
       .replace(
         removeRegex,
-        (from, variant) => `]:(${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') })`,
+        (from, variant) => `]:(${variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ')})`,
       ).replace(
         attributeValuesGroupRegex,
         (from, pre, values) => values
           .split(/\s/g)
           .filter(Boolean)
-          .map((v, i, a) => `${ pre + v }${ i === a.length - 1 ? '' : ']' }`)
+          .map((v, i, a) => `${pre + v}${i === a.length - 1 ? '' : ']'}`)
           .join(','),
       ).replace(
         dataAttributeValuesGroupRegex,
         (from, pre, values, variant) => values
           .split(/\s/g)
           .filter(Boolean)
-          .map(i => `${ pre }${ i }]:${ variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ') }`)
+          .map(i => `${pre}${i}]:${variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ')}`)
           .join(' '),
       )
 

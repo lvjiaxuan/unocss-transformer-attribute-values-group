@@ -1,7 +1,25 @@
 [![npm](https://img.shields.io/npm/v/unocss-transformer-attribute-values-group)](https://www.npmjs.com/package/unocss-transformer-attribute-values-group)
 
-# Usage
+# Installation
 
+```sh
+pnpm add -D unocss-transformer-attribute-values-group
+```
+
+```ts
+// uno.config.ts
+import { defineConfig } from 'unocss'
+import transformerAttrValuesGroup from 'unocss-transformer-attribute-values-group'
+
+export default defineConfig({
+  // ...
+  transformers: [
+    transformerAttrValuesGroup(),
+  ],
+})
+```
+
+# Usage:
 ```vue
 <script setup lang="ts">
 const type = ref<'number' | 'text'>()

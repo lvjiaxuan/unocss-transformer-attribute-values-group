@@ -4,7 +4,6 @@ import transformer from './index'
 const main = transformer.transform
 
 describe('group attribute values', () => {
-
   it('base', () => {
     const base = main('[&[type=(number text)]]:c-red')
     expect(base).toMatchInlineSnapshot('"[&[type=number],&[type=text]]:c-red"')
