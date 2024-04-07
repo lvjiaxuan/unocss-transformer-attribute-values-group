@@ -31,13 +31,13 @@
     "prepublishOnly": "pnpm test && pnpm build"
   },
   "dependencies": {
-    "@unocss/core": "^0.58.8",
-    "magic-string": "^0.30.8"
+    "@unocss/core": "^0.59.0",
+    "magic-string": "^0.30.9"
   },
   "devDependencies": {
     "@lvjiaxuan/eslint-config": "^1.9.1",
-    "eslint": "^8.57.0",
-    "rollup": "^4.13.2",
+    "eslint": "^9.0.0",
+    "rollup": "^4.14.0",
     "vitest": "^1.4.0"
   }
 }
