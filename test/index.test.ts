@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import transformer from './index'
-
-const main = transformer.transform
+import { main } from '../src'
 
 describe('group attribute values', () => {
   it('base', () => {

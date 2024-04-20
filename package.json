@@ -16,18 +16,21 @@
   ],
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "import": "./index.mjs",
-      "require": "./index.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
-  "main": "index.cjs",
-  "module": "index.mjs",
-  "types": "index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest",
-    "lint": "eslint .",
-    "build": "rollup index.mjs --file=index.cjs --format=cjs --external=magic-string",
+    "lint": "eslint",
+    "build": "tsup src/index.ts --format=esm,cjs --dts",
     "prepublishOnly": "pnpm test && pnpm build"
   },
   "dependencies": {
@@ -37,7 +40,9 @@
   "devDependencies": {
     "@lvjiaxuan/eslint-config": "^1.10.1",
     "eslint": "^9.0.0",
-    "rollup": "^4.14.2",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5",
+    "unocss": "^0.59.4",
     "vitest": "^1.5.0"
   }
 }
