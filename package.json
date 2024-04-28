@@ -39,10 +39,10 @@
   },
   "devDependencies": {
     "@lvjiaxuan/eslint-config": "^1.10.1",
-    "eslint": "^9.1.0",
+    "eslint": "^9.1.1",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5",
     "unocss": "^0.59.4",
-    "vitest": "^1.5.0"
+    "vitest": "^1.5.2"
   }
 }
