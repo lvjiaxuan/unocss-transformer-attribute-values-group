@@ -1,4 +1,4 @@
-import MagicString from 'magic-string'
+import type MagicString from 'magic-string'
 import type { SourceCodeTransformer } from '@unocss/core'
 
 export function main(code: MagicString | string) {
@@ -10,7 +10,7 @@ export function main(code: MagicString | string) {
   // Remove the newline in parentheses
   const removeRegex = new RegExp(`\\]:\\((${valueRegexStr})\\)`, 'gm')
 
-  const str = code.toString()
+  code
     .replace(
       removeRegex,
       (from, variant: string) => `]:(${variant.replace(/[\n\r]?/g, '').replace(/ {2,}/g, ' ')})`,
@@ -30,16 +30,13 @@ export function main(code: MagicString | string) {
         .join(' '),
     )
 
-  if (typeof code !== 'string' && code.length()) {
-    code = new MagicString(code.toString()) // hack? rewrite original magic string
-    code.overwrite(0, code.length(), str)
-  }
-
-  return str
+  return code.toString()
 }
 
 export default {
   name: 'unocss-transformer-attribute-values-group',
   enforce: 'pre',
-  transform: main,
+  transform: (s) => {
+    main(s)
+  },
 } as SourceCodeTransformer
