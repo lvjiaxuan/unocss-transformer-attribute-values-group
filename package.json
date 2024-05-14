@@ -34,15 +34,14 @@
     "prepublishOnly": "pnpm test && pnpm build"
   },
   "dependencies": {
-    "@unocss/core": "^0.60.0",
-    "magic-string": "^0.30.10"
+    "unocss": "^0.60.3"
   },
   "devDependencies": {
     "@lvjiaxuan/eslint-config": "^1.10.1",
-    "eslint": "^9.2.0",
+    "eslint": "^9.3.0",
+    "magic-string": "^0.30.10",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5",
-    "unocss": "^0.60.0",
     "vitest": "^1.6.0"
   }
 }

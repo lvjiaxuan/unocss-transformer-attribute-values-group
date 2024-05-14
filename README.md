@@ -6,6 +6,8 @@
 pnpm add -D unocss-transformer-attribute-values-group
 ```
 
+# Usage:
+
 ```ts
 // uno.config.ts
 import { defineConfig } from 'unocss'
@@ -19,7 +21,6 @@ export default defineConfig({
 })
 ```
 
-# Usage:
 ```vue
 <script setup lang="ts">
 const type = ref<'number' | 'text'>()
@@ -49,3 +50,8 @@ transformed like:
 ```
 
 [tests](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/blob/main/tests/index.test.ts) for more details.
+
+# References
+
+- [using-arbitrary-variants](https://tailwindcss.com/docs/hover-focus-and-other-states#using-arbitrary-variants)
+- [the better arbitrary-variants of unocss](https://github.com/unocss/unocss/blob/main/packages/preset-mini/src/_variants/misc.ts#L75)
