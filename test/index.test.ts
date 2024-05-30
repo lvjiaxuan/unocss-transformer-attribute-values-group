@@ -25,22 +25,6 @@ describe.skip('group attribute values', () => {
     ).toMatchInlineSnapshot()
   })
 
-  it('with operator', () => {
-    expect(
-      main(new MagicString('[&[type^=(number text)]]:c-red')),
-    ).toMatchInlineSnapshot(`"[&[type^=number],&[type^=text]]:c-red"`)
-  })
-
-  it('with combinator', () => {
-    expect(
-      main(new MagicString('[.foo,&[type=(number text)]~.bar]:c-red')),
-    ).toMatchInlineSnapshot()
-
-    expect(
-      main(new MagicString('[.foo+&[type=(number text)]]:c-red')),
-    ).toMatchInlineSnapshot()
-  })
-
   it('multiple variant sorting', () => {
     expect(
       main(new MagicString('dark:hover:[&[type=(number text)]]:c-red')),
