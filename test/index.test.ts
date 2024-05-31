@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import MagicString from 'magic-string'
 import { main } from '../src'
 
-describe.skip('group attribute values', () => {
+describe('group attribute values', () => {
   it('basic', () => {
     expect(
       main(new MagicString('[&[type=(number text)]]:c-red')),
@@ -15,23 +15,23 @@ describe.skip('group attribute values', () => {
     ).toMatchInlineSnapshot(`"[&[type^=number],&[type^=text]]:c-red"`)
   })
 
-  it('with combinator', () => {
-    expect(
-      main(new MagicString('[.foo,&[type=(number text)]~.bar]:c-red')),
-    ).toMatchInlineSnapshot()
-
+  it.todo('with combinator', () => {
     expect(
       main(new MagicString('[.foo+&[type=(number text)]]:c-red')),
     ).toMatchInlineSnapshot()
+
+    expect(
+      main(new MagicString('[.foo,&[type=(number text)]~.bar]:c-red')),
+    ).toMatchInlineSnapshot()
   })
 
-  it('multiple variant sorting', () => {
+  it.todo('multiple variant sorting', () => {
     expect(
       main(new MagicString('dark:hover:[&[type=(number text)]]:c-red')),
     ).toMatchInlineSnapshot()
   })
 
-  it('with grouping selector', () => {
+  it.todo('with grouping selector', () => {
     expect(
       main(new MagicString('[.foo,&[type=(number text)]]:c-red')),
     ).toMatchInlineSnapshot()
@@ -78,7 +78,7 @@ describe.skip('group attribute values', () => {
   })
 })
 
-describe.skip('group data-attribute values', () => {
+describe('group data-attribute values', () => {
   it('basic', () => {
     expect(
       main(new MagicString('data-[xxx=(foo bar)]:p-1')),
@@ -91,16 +91,16 @@ describe.skip('group data-attribute values', () => {
     ).toMatchInlineSnapshot(`"data-[xxx^=foo]:p-1 data-[xxx^=bar]:p-1"`)
   })
 
-  it('multiple', () => {
+  it.todo('multiple', () => {
     expect(
       main(new MagicString('data-[xxx=(foo bar)]:p-1 data-[yyy=(aaa bbb)]:m-1')),
-    ).toMatchInlineSnapshot(`"data-[xxx=foo]:p-1 data-[yyy=(aaa bbb)]:m-1 data-[xxx=bar]:p-1 data-[yyy=(aaa bbb)]:m-1data-[xxx=(foo bar)]:p-1 data-[yyy=aaa]:m-1 data-[xxx=(foo bar)]:p-1 data-[yyy=bbb]:m-1"`)
+    ).toMatchInlineSnapshot()
   })
 
   it('multiple variant sorting', () => {
     expect(
       main(new MagicString('dark:hover:data-[xxx=(foo bar)]:c-red')),
-    ).toMatchInlineSnapshot()
+    ).toMatchInlineSnapshot(`"dark:hover:data-[xxx=foo]:c-red dark:hover:data-[xxx=bar]:c-red"`)
   })
 
   it('with variant group', () => {
@@ -132,16 +132,16 @@ describe.skip('group data-attribute values', () => {
   })
 })
 
-describe.skip('random combination', () => {
-  it('combination 1', () => expect(
+describe('random combination', () => {
+  it.todo('combination 1', () => expect(
     main(new MagicString('data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1')),
-  ).toMatchInlineSnapshot(`"data-[xxx=foo]:(p-1 m-1) data-[yyy=(aa)]:p-1 data-[xxx=bar]:(p-1 m-1) data-[yyy=(aa)]:p-1data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=aa]:p-1"`))
+  ).toMatchInlineSnapshot())
 
-  it('combination 2', () => {
+  it.todo('combination 2', () => {
     expect(main(new MagicString('[&[type=(number text)]]:c-red data-[xxx=(foo bar)]:p-1')))
-      .toMatchInlineSnapshot(`"[&[type=number],&[type=text]]:c-red data-[xxx=(foo bar)]:p-1[&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1 [&[type=number],&[type=text]]:c-red data-[xxx=bar]:p-1"`)
+      .toMatchInlineSnapshot()
 
     expect(main(new MagicString('data-[xxx=(foo bar)]:p-1 [&[type=(number text)]]:c-red')))
-      .toMatchInlineSnapshot(`"data-[xxx=(foo bar)]:p-1 [&[type=number],&[type=text]]:c-reddata-[xxx=foo]:p-1 [&[type=number],&[type=text]]:c-red data-[xxx=bar]:p-1 [&[type=number],&[type=text]]:c-red"`)
+      .toMatchInlineSnapshot()
   })
 })
