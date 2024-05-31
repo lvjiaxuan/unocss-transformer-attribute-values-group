@@ -15,12 +15,14 @@ export function main(code: MagicString) {
 
   // with combinator
   code.replace(
-    /(?<=class=".*?)\[(\S+)&\[(.+?)=\(([\s\S]+?)\)(?=.*?")/g,
-    (_match, combinator: string, variant: string, values: string) => values
+    /(?<=class=".*?)\[(\S*?)&\[(.+?)=\(([\s\S]+?)\)\](\S*?)\](?=.*?")/g,
+    (_match, combinatorAhead: string, variant: string, values: string, combinatorBehind: string) => `${values
       .split(/\s/g)
       .filter(Boolean)
-      .map((value, idx, arr) => `${idx === 0 ? '[' : ''}${combinator}&[${variant}=${value}${arr.length - 1 === idx ? '' : ']'}`)
-      .join(','),
+      .map((value, idx, arr) => {
+        return `${idx === 0 ? '[' : ''}${combinatorAhead}&[${variant}=${value}${combinatorBehind ? `]${combinatorBehind}` : (arr.length - 1 === idx ? '' : ']')}`
+      })
+      .join(',')}]${combinatorBehind ? '' : ']'}`,
   )
 
   // const matches = code.toString().matchAll(/data-\[.+?=\((?<values>[\s\S]+?)\)/g)
