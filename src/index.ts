@@ -1,10 +1,11 @@
 import type MagicString from 'magic-string'
 import type { SourceCodeTransformer } from 'unocss'
+import { defaultSplitRE, splitWithVariantGroupRE } from 'unocss'
 
 export function main(code: MagicString) {
-  // basic implementation
+  // no combinator
   code.replace(
-    /&\[(.+?)=\(([\s\S]+?)\)/g,
+    /(?<=class=".*?)&\[(.+?)=\(([\s\S]+?)\)(?=.*?")/g,
     (_match, variant: string, values: string) => values
       .split(/\s/g)
       .filter(Boolean)
@@ -12,19 +13,29 @@ export function main(code: MagicString) {
       .join(','),
   )
 
-  const matches = code.toString().matchAll(/data-\[.+?=\((?<values>[\s\S]+?)\)/g)
-
-  const clone = code.clone()
-  ;[...matches].forEach((match) => {
-    code.replace(match.input, '')
-    const values = match?.groups?.values as unknown as string
-    values
-      ?.split(/\s/g)
+  // with combinator
+  code.replace(
+    /(?<=class=".*?)\[(\S+)&\[(.+?)=\(([\s\S]+?)\)(?=.*?")/g,
+    (_match, combinator: string, variant: string, values: string) => values
+      .split(/\s/g)
       .filter(Boolean)
-      .forEach((value, idx) => {
-        code.append(`${idx === 0 ? '' : ' '}${clone.toString().replace(`(${values})`, value)}`)
-      })
-  })
+      .map((value, idx, arr) => `${idx === 0 ? '[' : ''}${combinator}&[${variant}=${value}${arr.length - 1 === idx ? '' : ']'}`)
+      .join(','),
+  )
+
+  // const matches = code.toString().matchAll(/data-\[.+?=\((?<values>[\s\S]+?)\)/g)
+
+  // const clone = code.clone()
+  // ;[...matches].forEach((match) => {
+  //   code.replace(match.input, '')
+  //   const values = match?.groups?.values as unknown as string
+  //   values
+  //     ?.split(/\s/g)
+  //     .filter(Boolean)
+  //     .forEach((value, idx) => {
+  //       code.append(`${idx === 0 ? '' : ' '}${clone.toString().replace(`(${values})`, value)}`)
+  //     })
+  // })
 
   return code.toString()
 }
