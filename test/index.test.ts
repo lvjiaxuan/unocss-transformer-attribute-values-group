@@ -1,4 +1,3 @@
-import { readFile } from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 import MagicStringStack from 'magic-string-stack'
 import { main } from '../src'
@@ -337,7 +336,7 @@ describe('references some special cases from UnoCSS', () => {
       '[&[type=(number text)]]:(!m-2 p-2)',
       'data-[xxx=(foo bar)]:(!m-2 p-2)',
       '[&[type=(number text)]]:(w-1/2 h-[calc(100%-4rem)])',
-      'data-[xxx=(foo bar)]:(w-1/2 h-[calc(100%-4rem)])',
+      'data-[xxx=(foo bar)]:(w-1/2 h-[calc(100%-4rem)])', // TODO fail
       '[&[type=(number text)]]:(\n!m-2 \np-2\n)',
       'data-[xxx=(foo bar)]:(\n!m-2 \np-2\n)',
       // '[&]:(w-4 h-4) [&]:(w-4 h-4)',
@@ -348,6 +347,4 @@ describe('references some special cases from UnoCSS', () => {
       expect(result).toMatchSnapshot(`"${c}"`)
     }
   })
-
-
 })
