@@ -2,3 +2,4 @@ node_modules
 *.local
 index.cjs
 index.d.ts
+dist
