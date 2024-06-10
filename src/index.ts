@@ -3,7 +3,6 @@ import MagicStringStack from 'magic-string-stack'
 import type { SourceCodeTransformer } from 'unocss'
 
 export function main(_code: MagicString) {
-
   const code = new MagicStringStack(_code.toString())
 
   // no combinator
@@ -29,7 +28,7 @@ export function main(_code: MagicString) {
   )
 
   // data-attribute
-  const matches = code.toString().matchAll(/(?<=class="[\s\S]*?)data-\[\S+=\((?<values>[^\)]+)\)\]:([^(]\S+|\([^\)]+\))(?=[\s\S]*?")/g)
+  const matches = code.toString().matchAll(/(?<=class="[\s\S]*?)(\S+:)*?data-\[\S+=\((?<values>[^\)]+)\)\]:([^(]\S+|\([^\)]+\))(?=[\s\S]*?")/g)
   ;[...matches].forEach((match) => {
     const values = match?.groups?.values as unknown as string
 

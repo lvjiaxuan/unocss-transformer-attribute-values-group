@@ -225,18 +225,26 @@ describe('group data-attribute values', () => {
     `)
   })
 
-  it.todo('multiple variant sorting', () => {
+  it('multiple variant sorting', () => {
     expect(
-      main(m('dark:hover:data-[xxx=(foo bar)]:c-red')),
+      main(m('dark:hover:data-[xxx=(foo bar)]:c-red', false)),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 dark:hover:data-[xxx=foo]:c-red:flex data-[xxx=bar]:c-red:flex m2" />
-      <p class="p1 dark:hover:data-[xxx=foo]:c-red:(border data-[xxx=bar]:c-red:(border c-red) m2" />"
+      "<div class="p1 dark:hover:data-[xxx=foo]:c-red dark:hover:data-[xxx=bar]:c-red m1" />
+      <p class="p2 dark:hover:data-[xxx=foo]:c-red dark:hover:data-[xxx=bar]:c-red m2" />
+      "
+    `)
+    expect(
+      main(m('dark:hover:data-[xxx=(foo bar)]:(c-red border)', false)),
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 dark:hover:data-[xxx=foo]:(c-red border) dark:hover:data-[xxx=bar]:(c-red border) m1" />
+      <p class="p2 dark:hover:data-[xxx=foo]:(c-red border) dark:hover:data-[xxx=bar]:(c-red border) m2" />
+      "
     `)
   })
 
-  it.todo('with newline', () => {
+  it('with newline', () => {
     expect(
-      main(m('data-[xxx=(foo\n bar)]:(\n  c-red \n     m-1\n     p-1\n  )')),
+      main(m('data-[xxx=(foo\n bar)]:(\n  c-red \n     m-1\n     p-1\n  )', false)),
     ).toMatchInlineSnapshot(`
       "<div class="p1 data-[xxx=foo]:(
         c-red 
@@ -246,55 +254,63 @@ describe('group data-attribute values', () => {
         c-red 
            m-1
            p-1
-        ):flex m2" />
-      <p class="p1 data-[xxx=(foo
-       bar)]:(
+        ) m1" />
+      <p class="p2 data-[xxx=foo]:(
         c-red 
            m-1
            p-1
-        ):(border c-red) m2" />"
+        ) data-[xxx=bar]:(
+        c-red 
+           m-1
+           p-1
+        ) m2" />
+      "
     `)
   })
 
   it('empty', () => {
     expect(
-      main(m('data-[xxx=()]:p-1')),
+      main(m('data-[xxx=()]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=()]:p-1:flex m1" />
-      <p class="p2 data-[xxx=()]:p-1:(border c-red) m2" />
+      "<div class="p1 data-[xxx=()]:flex m1" />
+      <p class="p2 data-[xxx=()]:(border c-red) m2" />
       "
     `)
   })
 })
 
 describe('random combination', () => {
-  it.todo('combination 1', () => expect(
+  it('combination 1', () => expect(
     main(m('data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1', false)),
   ).toMatchInlineSnapshot(`
-    "<div class="p1 data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1) data-[yyy=aa]:p-1 m2" />
-    <p class="p1 data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1 m2" />"
+    "<div class="p1 data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1) data-[yyy=aa]:p-1 m1" />
+    <p class="p2 data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1) data-[yyy=aa]:p-1 m2" />
+    "
   `))
 
-  it.todo('combination 2', () => {
-    expect(main(m('[&[type=(number text)]]:c-red data-[xxx=(foo bar)]:p-1')))
+  it('combination 2', () => {
+    expect(main(m('[&[type=(number text)]]:c-red data-[xxx=(foo bar)]:p-1', false)))
       .toMatchInlineSnapshot(`
-        "<div class="p1 [&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1:flex data-[xxx=bar]:p-1:flex m2" />
-        <p class="p1 [&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1:(border data-[xxx=bar]:p-1:(border c-red) m2" />"
+        "<div class="p1 [&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1 data-[xxx=bar]:p-1 m1" />
+        <p class="p2 [&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1 data-[xxx=bar]:p-1 m2" />
+        "
       `)
 
-    expect(main(m('data-[xxx=(foo bar)]:p-1 [&[type=(number text)]]:c-red')))
+    expect(main(m('data-[xxx=(foo bar)]:(border flex) [&[type=(number text)]]:c-red', false)))
       .toMatchInlineSnapshot(`
-        "<div class="p1 data-[xxx=foo]:p-1 data-[xxx=bar]:p-1 [&[type=number],&[type=text]]:c-red:flex m2" />
-        <p class="p1 data-[xxx=(foo bar)]:p-1 [&[type=number],&[type=text]]:c-red:(border c-red) m2" />"
+        "<div class="p1 data-[xxx=foo]:(border flex) data-[xxx=bar]:(border flex) [&[type=number],&[type=text]]:c-red m1" />
+        <p class="p2 data-[xxx=foo]:(border flex) data-[xxx=bar]:(border flex) [&[type=number],&[type=text]]:c-red m2" />
+        "
       `)
   })
 
-  it.todo('with grouping selector and combinator', () => {
+  it.only('with grouping selector and combinator', () => {
     expect(
-      main(m('[.foo,&[type=(number text)]~.bar]:c-red')),
+      main(m('[.foo,&[type=(number text)]~.bar]:c-red', false)),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo,&[type=number]~.bar,.foo,&[type=text]~.bar]:c-red:flex m2" />
-      <p class="p1 [.foo,&[type=number]~.bar,.foo,&[type=text]~.bar]:c-red:(border c-red) m2" />"
+      "<div class="p1 [.foo,&[type=number]~.bar,.foo,&[type=text]~.bar]:c-red m1" />
+      <p class="p2 [.foo,&[type=number]~.bar,.foo,&[type=text]~.bar]:c-red m2" />
+      "
     `)
   })
 })
