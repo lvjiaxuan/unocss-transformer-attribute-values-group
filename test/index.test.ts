@@ -177,16 +177,14 @@ describe('group attribute values', () => {
   })
 })
 
-describes.skip('group data-attribute values', () => {
+describe('group data-attribute values', () => {
   it('basic', () => {
     expect(
+      // data-[xxx=foo]:aaa data-[xxx=bar]:(aaa bbb)
       main(m('data-[xxx=(foo bar)]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=foo]:flex m2" />
-      <p class="p1 data-[xxx=(foo bar)]:(border c-red) m2" /> <div class="p1 data-[xxx=bar]:flex m2" />
-      <p class="p1 data-[xxx=(foo bar)]:(border c-red) m2" /><div class="p1 data-[xxx=foo]:flex m2" />
-      <p class="p1 data-[xxx=(foo bar)]:(border c-red) m2" /> <div class="p1 data-[xxx=bar]:flex m2" />
-      <p class="p1 data-[xxx=(foo bar)]:(border c-red) m2" />"
+      "<div class="p1 data-[xxx=foo]:flex data-[xxx=bar]:flex m2" />
+      <p class="p1 data-[xxx=foo]:(border c-red) data-[xxx=bar]:(border c-red) m2" />"
     `)
   })
 
@@ -194,51 +192,30 @@ describes.skip('group data-attribute values', () => {
     expect(
       main(m('data-[xxx^=(foo bar)]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx^=foo]:flex m2" />
-      <p class="p1 data-[xxx^=(foo bar)]:(border c-red) m2" /> <div class="p1 data-[xxx^=bar]:flex m2" />
-      <p class="p1 data-[xxx^=(foo bar)]:(border c-red) m2" /><div class="p1 data-[xxx^=foo]:flex m2" />
-      <p class="p1 data-[xxx^=(foo bar)]:(border c-red) m2" /> <div class="p1 data-[xxx^=bar]:flex m2" />
-      <p class="p1 data-[xxx^=(foo bar)]:(border c-red) m2" />"
+      "<div class="p1 data-[xxx^=foo]:flex data-[xxx^=bar]:flex m2" />
+      <p class="p1 data-[xxx^=foo]:(border c-red) data-[xxx^=bar]:(border c-red) m2" />"
     `)
   })
 
   it.todo('multiple', () => {
     expect(
-      main(m('data-[xxx=(foo bar)]:p-1 data-[yyy=(aaa bbb)]:m-1', false)),
+      main(m('data-[xxx=(foo bar)]:p2 data-[yyy=(aaa bbb)]:(m3 m4)', false)),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx^=foo]:p-1:flex m2" />
-      <p class="p1 data-[xxx^=(foo bar)]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx^=bar]:p-1:flex m2" />
-      <p class="p1 data-[xxx^=(foo bar)]:p-1:(border c-red) m2" /><div class="p1 data-[xxx^=foo]:p-1:flex m2" />
-      <p class="p1 data-[xxx^=(foo bar)]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx^=bar]:p-1:flex m2" />
-      <p class="p1 data-[xxx^=(foo bar)]:p-1:(border c-red) m2" />"
+      "<div class="p1 data-[xxx=foo]:p2 data-[xxx=bar]:p2 data-[yyy=aaa]:(m3 m4) data-[yyy=bbb]:(m3 m4) m2" />
+      <p class="p1 data-[xxx=(foo bar)]:p2 data-[yyy=(aaa bbb)]:(m3 m4) m2" />"
     `)
   })
 
-  it('multiple variant sorting', () => {
+  it.todo('multiple variant sorting', () => {
     expect(
       main(m('dark:hover:data-[xxx=(foo bar)]:c-red')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 dark:hover:data-[xxx=foo]:c-red:flex m2" />
-      <p class="p1 dark:hover:data-[xxx=(foo bar)]:c-red:(border c-red) m2" /> <div class="p1 dark:hover:data-[xxx=bar]:c-red:flex m2" />
-      <p class="p1 dark:hover:data-[xxx=(foo bar)]:c-red:(border c-red) m2" /><div class="p1 dark:hover:data-[xxx=foo]:c-red:flex m2" />
-      <p class="p1 dark:hover:data-[xxx=(foo bar)]:c-red:(border c-red) m2" /> <div class="p1 dark:hover:data-[xxx=bar]:c-red:flex m2" />
-      <p class="p1 dark:hover:data-[xxx=(foo bar)]:c-red:(border c-red) m2" />"
+      "<div class="p1 dark:hover:data-[xxx=foo]:c-red:flex data-[xxx=bar]:c-red:flex m2" />
+      <p class="p1 dark:hover:data-[xxx=foo]:c-red:(border data-[xxx=bar]:c-red:(border c-red) m2" />"
     `)
   })
 
-  it('with variant group', () => {
-    expect(
-      main(m('data-[xxx=(foo bar)]:(p-1 m-1)')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=foo]:(p-1 m-1):flex m2" />
-      <p class="p1 data-[xxx=(foo bar)]:(p-1 m-1):(border c-red) m2" /> <div class="p1 data-[xxx=bar]:(p-1 m-1):flex m2" />
-      <p class="p1 data-[xxx=(foo bar)]:(p-1 m-1):(border c-red) m2" /><div class="p1 data-[xxx=foo]:(p-1 m-1):flex m2" />
-      <p class="p1 data-[xxx=(foo bar)]:(p-1 m-1):(border c-red) m2" /> <div class="p1 data-[xxx=bar]:(p-1 m-1):flex m2" />
-      <p class="p1 data-[xxx=(foo bar)]:(p-1 m-1):(border c-red) m2" />"
-    `)
-  })
-
-  it('with newline', () => {
+  it.todo('with newline', () => {
     expect(
       main(m('data-[xxx=(foo\n bar)]:(\n  c-red \n     m-1\n     p-1\n  )')),
     ).toMatchInlineSnapshot(`
@@ -246,33 +223,7 @@ describes.skip('group data-attribute values', () => {
         c-red 
            m-1
            p-1
-        ):flex m2" />
-      <p class="p1 data-[xxx=(foo
-       bar)]:(
-        c-red 
-           m-1
-           p-1
-        ):(border c-red) m2" /> <div class="p1 data-[xxx=bar]:(
-        c-red 
-           m-1
-           p-1
-        ):flex m2" />
-      <p class="p1 data-[xxx=(foo
-       bar)]:(
-        c-red 
-           m-1
-           p-1
-        ):(border c-red) m2" /><div class="p1 data-[xxx=foo]:(
-        c-red 
-           m-1
-           p-1
-        ):flex m2" />
-      <p class="p1 data-[xxx=(foo
-       bar)]:(
-        c-red 
-           m-1
-           p-1
-        ):(border c-red) m2" /> <div class="p1 data-[xxx=bar]:(
+        ) data-[xxx=bar]:(
         c-red 
            m-1
            p-1
@@ -289,26 +240,41 @@ describes.skip('group data-attribute values', () => {
   it('empty', () => {
     expect(
       main(m('data-[xxx=()]:p-1')),
-    ).toMatchInlineSnapshot(`"<div class="p1 data-[xxx=)]:p-1:flex]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=m2"]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=/>]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=<p]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=class="p1]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=data-[xxx=(]:p-1:(border c-red) m2" />"`)
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 data-[xxx=()]:p-1:flex m2" />
+      <p class="p1 data-[xxx=()]:p-1:(border c-red) m2" />"
+    `)
   })
 })
 
-describe.skip('random combination', () => {
+describe('random combination', () => {
   it.todo('combination 1', () => expect(
-    main(m('data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1')),
-  ).toMatchInlineSnapshot(`"<div class="p1 data-[xxx=)]:p-1:flex]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=m2"]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=/>]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=<p]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=class="p1]:p-1:(border c-red) m2" /> <div class="p1 data-[xxx=data-[xxx=(]:p-1:(border c-red) m2" />"`))
+    main(m('data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1', false)),
+  ).toMatchInlineSnapshot(`
+    "<div class="p1 data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1) data-[yyy=aa]:p-1 m2" />
+    <p class="p1 data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1 m2" />"
+  `))
 
   it.todo('combination 2', () => {
     expect(main(m('[&[type=(number text)]]:c-red data-[xxx=(foo bar)]:p-1')))
-      .toMatchInlineSnapshot()
+      .toMatchInlineSnapshot(`
+        "<div class="p1 [&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1:flex data-[xxx=bar]:p-1:flex m2" />
+        <p class="p1 [&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1:(border data-[xxx=bar]:p-1:(border c-red) m2" />"
+      `)
 
     expect(main(m('data-[xxx=(foo bar)]:p-1 [&[type=(number text)]]:c-red')))
-      .toMatchInlineSnapshot()
+      .toMatchInlineSnapshot(`
+        "<div class="p1 data-[xxx=foo]:p-1 data-[xxx=bar]:p-1 [&[type=number],&[type=text]]:c-red:flex m2" />
+        <p class="p1 data-[xxx=(foo bar)]:p-1 [&[type=number],&[type=text]]:c-red:(border c-red) m2" />"
+      `)
   })
 
-  it('with grouping selector and combinator', () => {
+  it.todo('with grouping selector and combinator', () => {
     expect(
       main(m('[.foo,&[type=(number text)]~.bar]:c-red')),
-    ).toMatchInlineSnapshot(`"<div class="[.foo,&[type=number],&[type=text]~.bar]:c-red" />"`)
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 [.foo,&[type=number]~.bar,.foo,&[type=text]~.bar]:c-red:flex m2" />
+      <p class="p1 [.foo,&[type=number]~.bar,.foo,&[type=text]~.bar]:c-red:(border c-red) m2" />"
+    `)
   })
 })

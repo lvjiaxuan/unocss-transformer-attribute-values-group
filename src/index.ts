@@ -25,17 +25,20 @@ export function main(code: MagicString) {
       .join(',')}]${combinatorBehind ? '' : ']'}`,
   )
 
-  const matches = code.toString().matchAll(/data-\[.+?=\((?<values>[\s\S]+?)\)/g)
-  const clone = code.clone()
+  // data-attribute
+  const matches = code.toString().matchAll(/(?<=class="[\s\S]*?)data-\[\S+=\((?<values>[^\)]+)\)\]:([^(]\S+|\([^\)]+\))(?=[\s\S]*?")/g)
   ;[...matches].forEach((match) => {
-    code.replace(match.input, '')
     const values = match?.groups?.values as unknown as string
-    values
+
+    const joinIt = values
       ?.split(/\s/g)
       .filter(Boolean)
-      .forEach((value, idx) => {
-        code.append(`${idx === 0 ? '' : ' '}${clone.toString().replace(`(${values})`, value)}`)
-      })
+      .reduce((acc, value, idx) => {
+        acc.push(match[0].replaceAll(`(${values})`, value))
+        return acc
+      }, [] as string[])
+
+    code.replace(match[0], joinIt.join(' '))
   })
 
   return code.toString()
@@ -47,4 +50,4 @@ export default {
   transform: (code) => {
     main(code)
   },
-} as SourceCodeTransformer
+} satisfies SourceCodeTransformer
