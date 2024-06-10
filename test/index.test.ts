@@ -2,15 +2,16 @@ import { describe, expect, it } from 'vitest'
 import MagicString from 'magic-string'
 import { main } from '../src'
 
-const m = (s: string, utility = true) => new MagicString(`<div class="p1 ${s}${utility ? ':flex' : ''} m2" />\n<p class="p1 ${s}${utility ? ':(border c-red)' : ''} m2" />`)
+const m = (s: string, utility = true) => new MagicString(`<div class="p1 ${s}${utility ? ':flex' : ''} m1" />\n<p class="p2 ${s}${utility ? ':(border c-red)' : ''} m2" />\n`)
 
 describe('group attribute values', () => {
   it('basic', () => {
     expect(
       main(m('[&[type=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=number],&[type=text]]:flex m2" />
-      <p class="p1 [&[type=number],&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 [&[type=number],&[type=text]]:flex m1" />
+      <p class="p2 [&[type=number],&[type=text]]:(border c-red) m2" />
+      "
     `)
   })
 
@@ -18,8 +19,9 @@ describe('group attribute values', () => {
     expect(
       main(m('[&[type^=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type^=number],&[type^=text]]:flex m2" />
-      <p class="p1 [&[type^=number],&[type^=text]]:(border c-red) m2" />"
+      "<div class="p1 [&[type^=number],&[type^=text]]:flex m1" />
+      <p class="p2 [&[type^=number],&[type^=text]]:(border c-red) m2" />
+      "
     `)
   })
 
@@ -28,56 +30,63 @@ describe('group attribute values', () => {
       // Next-sibling combinator
       main(m('[.foo+&[type=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo+&[type=number],.foo+&[type=text]]:flex m2" />
-      <p class="p1 [.foo+&[type=number],.foo+&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 [.foo+&[type=number],.foo+&[type=text]]:flex m1" />
+      <p class="p2 [.foo+&[type=number],.foo+&[type=text]]:(border c-red) m2" />
+      "
     `)
 
     expect(
       // Child combinator
       main(m('[.foo>&[type=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo>&[type=number],.foo>&[type=text]]:flex m2" />
-      <p class="p1 [.foo>&[type=number],.foo>&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 [.foo>&[type=number],.foo>&[type=text]]:flex m1" />
+      <p class="p2 [.foo>&[type=number],.foo>&[type=text]]:(border c-red) m2" />
+      "
     `)
 
     expect(
       // Column combinator
       main(m('[.foo||&[type=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo||&[type=number],.foo||&[type=text]]:flex m2" />
-      <p class="p1 [.foo||&[type=number],.foo||&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 [.foo||&[type=number],.foo||&[type=text]]:flex m1" />
+      <p class="p2 [.foo||&[type=number],.foo||&[type=text]]:(border c-red) m2" />
+      "
     `)
 
     expect(
       // Subsequent sibling combinator
       main(m('[.foo~&[type=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo~&[type=number],.foo~&[type=text]]:flex m2" />
-      <p class="p1 [.foo~&[type=number],.foo~&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 [.foo~&[type=number],.foo~&[type=text]]:flex m1" />
+      <p class="p2 [.foo~&[type=number],.foo~&[type=text]]:(border c-red) m2" />
+      "
     `)
 
     expect(
       // Descendant combinator
       main(m('[.foo_&[type=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo_&[type=number],.foo_&[type=text]]:flex m2" />
-      <p class="p1 [.foo_&[type=number],.foo_&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 [.foo_&[type=number],.foo_&[type=text]]:flex m1" />
+      <p class="p2 [.foo_&[type=number],.foo_&[type=text]]:(border c-red) m2" />
+      "
     `)
 
     expect(
       // Namespace separator
       main(m('[.foo|&[type=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo|&[type=number],.foo|&[type=text]]:flex m2" />
-      <p class="p1 [.foo|&[type=number],.foo|&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 [.foo|&[type=number],.foo|&[type=text]]:flex m1" />
+      <p class="p2 [.foo|&[type=number],.foo|&[type=text]]:(border c-red) m2" />
+      "
     `)
 
     expect(
       // a sequence of combinator
       main(m('[.foo+&[type=(number text)]~.bar_.sim]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:flex m2" />
-      <p class="p1 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:(border c-red) m2" />"
+      "<div class="p1 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:flex m1" />
+      <p class="p2 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:(border c-red) m2" />
+      "
     `)
   })
 
@@ -111,8 +120,9 @@ describe('group attribute values', () => {
       //   color: rgb(248 113 113 / var(--un-text-opacity));
       // }
     ).toMatchInlineSnapshot(`
-      "<div class="p1 dark:hover:[&[type=number],&[type=text]]:flex m2" />
-      <p class="p1 dark:hover:[&[type=number],&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 dark:hover:[&[type=number],&[type=text]]:flex m1" />
+      <p class="p2 dark:hover:[&[type=number],&[type=text]]:(border c-red) m2" />
+      "
     `)
   })
 
@@ -120,15 +130,17 @@ describe('group attribute values', () => {
     expect(
       main(m('[.foo&[type=(number text)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo&[type=number],.foo&[type=text]]:flex m2" />
-      <p class="p1 [.foo&[type=number],.foo&[type=text]]:(border c-red) m2" />"
+      "<div class="p1 [.foo&[type=number],.foo&[type=text]]:flex m1" />
+      <p class="p2 [.foo&[type=number],.foo&[type=text]]:(border c-red) m2" />
+      "
     `)
 
     expect(
       main(m('[.foo&[type=(number text)].bar]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo&[type=number].bar,.foo&[type=text].bar]:flex m2" />
-      <p class="p1 [.foo&[type=number].bar,.foo&[type=text].bar]:(border c-red) m2" />"
+      "<div class="p1 [.foo&[type=number].bar,.foo&[type=text].bar]:flex m1" />
+      <p class="p2 [.foo&[type=number].bar,.foo&[type=text].bar]:(border c-red) m2" />
+      "
     `)
   })
 
@@ -136,8 +148,9 @@ describe('group attribute values', () => {
     expect(
       main(m('[&[type=(number text)]]:c-red [&[size=(large small middle)]]:(border flex)', false)),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=number],&[type=text]]:c-red [&[size=large],&[size=small],&[size=middle]]:(border flex) m2" />
-      <p class="p1 [&[type=number],&[type=text]]:c-red [&[size=large],&[size=small],&[size=middle]]:(border flex) m2" />"
+      "<div class="p1 [&[type=number],&[type=text]]:c-red [&[size=large],&[size=small],&[size=middle]]:(border flex) m1" />
+      <p class="p2 [&[type=number],&[type=text]]:c-red [&[size=large],&[size=small],&[size=middle]]:(border flex) m2" />
+      "
     `)
   })
 
@@ -145,8 +158,9 @@ describe('group attribute values', () => {
     expect(
       main(m('[&[type=(number text)],&[name=(aa bb cc)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc]]:flex m2" />
-      <p class="p1 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc]]:(border c-red) m2" />"
+      "<div class="p1 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc]]:flex m1" />
+      <p class="p2 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc]]:(border c-red) m2" />
+      "
     `)
   })
 
@@ -158,12 +172,13 @@ describe('group attribute values', () => {
         c-red 
            m-1
            p-1
-        ) m2" />
-      <p class="p1 [&[type=number],&[type=text],&[aa=aa],&[aa=bb],&[aa=cc]]:(
+        ) m1" />
+      <p class="p2 [&[type=number],&[type=text],&[aa=aa],&[aa=bb],&[aa=cc]]:(
         c-red 
            m-1
            p-1
-        ) m2" />"
+        ) m2" />
+      "
     `)
   })
 
@@ -171,8 +186,9 @@ describe('group attribute values', () => {
     expect(
       main(m('[&[type=()]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=()]]:flex m2" />
-      <p class="p1 [&[type=()]]:(border c-red) m2" />"
+      "<div class="p1 [&[type=()]]:flex m1" />
+      <p class="p2 [&[type=()]]:(border c-red) m2" />
+      "
     `)
   })
 })
@@ -183,8 +199,9 @@ describe('group data-attribute values', () => {
       // data-[xxx=foo]:aaa data-[xxx=bar]:(aaa bbb)
       main(m('data-[xxx=(foo bar)]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=foo]:flex data-[xxx=bar]:flex m2" />
-      <p class="p1 data-[xxx=foo]:(border c-red) data-[xxx=bar]:(border c-red) m2" />"
+      "<div class="p1 data-[xxx=foo]:flex data-[xxx=bar]:flex m1" />
+      <p class="p2 data-[xxx=foo]:(border c-red) data-[xxx=bar]:(border c-red) m2" />
+      "
     `)
   })
 
@@ -192,8 +209,9 @@ describe('group data-attribute values', () => {
     expect(
       main(m('data-[xxx^=(foo bar)]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx^=foo]:flex data-[xxx^=bar]:flex m2" />
-      <p class="p1 data-[xxx^=foo]:(border c-red) data-[xxx^=bar]:(border c-red) m2" />"
+      "<div class="p1 data-[xxx^=foo]:flex data-[xxx^=bar]:flex m1" />
+      <p class="p2 data-[xxx^=foo]:(border c-red) data-[xxx^=bar]:(border c-red) m2" />
+      "
     `)
   })
 
@@ -241,8 +259,9 @@ describe('group data-attribute values', () => {
     expect(
       main(m('data-[xxx=()]:p-1')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=()]:p-1:flex m2" />
-      <p class="p1 data-[xxx=()]:p-1:(border c-red) m2" />"
+      "<div class="p1 data-[xxx=()]:p-1:flex m1" />
+      <p class="p2 data-[xxx=()]:p-1:(border c-red) m2" />
+      "
     `)
   })
 })

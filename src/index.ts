@@ -33,7 +33,7 @@ export function main(code: MagicString) {
     const joinIt = values
       ?.split(/\s/g)
       .filter(Boolean)
-      .reduce((acc, value, idx) => {
+      .reduce((acc, value, _idx) => {
         acc.push(match[0].replaceAll(`(${values})`, value))
         return acc
       }, [] as string[])
