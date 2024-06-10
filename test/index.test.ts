@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 import MagicStringStack from 'magic-string-stack'
 import { main } from '../src'
@@ -304,7 +305,7 @@ describe('random combination', () => {
       `)
   })
 
-  it.only('with grouping selector and combinator', () => {
+  it('with grouping selector and combinator', () => {
     expect(
       main(m('[.foo,&[type=(number text)]~.bar]:c-red', false)),
     ).toMatchInlineSnapshot(`
@@ -313,4 +314,40 @@ describe('random combination', () => {
       "
     `)
   })
+})
+
+describe('references some special cases from UnoCSS', () => {
+  it('basic', async () => {
+    const cases = [
+      // 'a1 [&[type=(number text)]]:(b1 b2:(c1 c2-(d1 d2) c3) b3) a3',
+      // 'bg-white font-light sm:hover:(bg-gray-100 font-medium)',
+      // 'lt-sm:hover:(p-1 p-2)',
+      '<sm:hover:[&[type=(number text)]]:(p-1 p-2)',
+      '<sm:hover:data-[xxx=(foo bar)]:(p-1 p-2)',
+      // 'sm:(p-1 p-2)',
+      // 'dark:lg:(p-1 p-2)',
+      // 'at-lg:(p-1 p-2)',
+      '[&[type=(number text)]]:(w-40vw pr-4.5rem)',
+      'data-[xxx=(foo bar)]:(w-40vw pr-4.5rem)',
+      '[&[type=(number text)]]:(grid grid-cols-[1fr,50%])',
+      'data-[xxx=(foo bar)]:(grid grid-cols-[1fr,50%])',
+      // '<md:(grid grid-cols-[1fr,50%])',
+      '![&[type=(number text)]]:(m-2 p-2)',
+      '!data-[xxx=(foo bar)]:(m-2 p-2)',
+      '[&[type=(number text)]]:(!m-2 p-2)',
+      'data-[xxx=(foo bar)]:(!m-2 p-2)',
+      '[&[type=(number text)]]:(w-1/2 h-[calc(100%-4rem)])',
+      'data-[xxx=(foo bar)]:(w-1/2 h-[calc(100%-4rem)])',
+      '[&[type=(number text)]]:(\n!m-2 \np-2\n)',
+      'data-[xxx=(foo bar)]:(\n!m-2 \np-2\n)',
+      // '[&]:(w-4 h-4) [&]:(w-4 h-4)',
+    ]
+
+    for (const c of cases) {
+      const result = main(m(c, false))
+      expect(result).toMatchSnapshot(`"${c}"`)
+    }
+  })
+
+
 })

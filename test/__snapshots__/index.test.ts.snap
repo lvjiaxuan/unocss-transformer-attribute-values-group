@@ -1,0 +1,109 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`references some special cases from UnoCSS > basic > "![&[type=(number text)]]:(m-2 p-2)" 1`] = `
+"<div class="p1 ![&[type=number],&[type=text]]:(m-2 p-2) m1" />
+<p class="p2 ![&[type=number],&[type=text]]:(m-2 p-2) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "!data-[xxx=(foo bar)]:(m-2 p-2)" 1`] = `
+"<div class="p1 !data-[xxx=foo]:(m-2 p-2) data-[xxx=bar]:(m-2 p-2) m1" />
+<p class="p2 !data-[xxx=foo]:(m-2 p-2) data-[xxx=bar]:(m-2 p-2) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "<sm:hover:[&[type=(number text)]]:(p-1 p-2)" 1`] = `
+"<div class="p1 <sm:hover:[&[type=number],&[type=text]]:(p-1 p-2) m1" />
+<p class="p2 <sm:hover:[&[type=number],&[type=text]]:(p-1 p-2) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "<sm:hover:data-[xxx=(foo bar)]:(p-1 p-2)" 1`] = `
+"<div class="p1 <sm:hover:data-[xxx=foo]:(p-1 p-2) <sm:hover:data-[xxx=bar]:(p-1 p-2) m1" />
+<p class="p2 <sm:hover:data-[xxx=foo]:(p-1 p-2) <sm:hover:data-[xxx=bar]:(p-1 p-2) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "[&[type=(number text)]]:(
+!m-2 
+p-2
+)" 1`] = `
+"<div class="p1 [&[type=number],&[type=text]]:(
+!m-2 
+p-2
+) m1" />
+<p class="p2 [&[type=number],&[type=text]]:(
+!m-2 
+p-2
+) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "[&[type=(number text)]]:(!m-2 p-2)" 1`] = `
+"<div class="p1 [&[type=number],&[type=text]]:(!m-2 p-2) m1" />
+<p class="p2 [&[type=number],&[type=text]]:(!m-2 p-2) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "[&[type=(number text)]]:(grid grid-cols-[1fr,50%])" 1`] = `
+"<div class="p1 [&[type=number],&[type=text]]:(grid grid-cols-[1fr,50%]) m1" />
+<p class="p2 [&[type=number],&[type=text]]:(grid grid-cols-[1fr,50%]) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "[&[type=(number text)]]:(w-1/2 h-[calc(100%-4rem)])" 1`] = `
+"<div class="p1 [&[type=number],&[type=text]]:(w-1/2 h-[calc(100%-4rem)]) m1" />
+<p class="p2 [&[type=number],&[type=text]]:(w-1/2 h-[calc(100%-4rem)]) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "[&[type=(number text)]]:(w-40vw pr-4.5rem)" 1`] = `
+"<div class="p1 [&[type=number],&[type=text]]:(w-40vw pr-4.5rem) m1" />
+<p class="p2 [&[type=number],&[type=text]]:(w-40vw pr-4.5rem) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "data-[xxx=(foo bar)]:(
+!m-2 
+p-2
+)" 1`] = `
+"<div class="p1 data-[xxx=foo]:(
+!m-2 
+p-2
+) data-[xxx=bar]:(
+!m-2 
+p-2
+) m1" />
+<p class="p2 data-[xxx=foo]:(
+!m-2 
+p-2
+) data-[xxx=bar]:(
+!m-2 
+p-2
+) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "data-[xxx=(foo bar)]:(!m-2 p-2)" 1`] = `
+"<div class="p1 data-[xxx=foo]:(!m-2 p-2) data-[xxx=bar]:(!m-2 p-2) m1" />
+<p class="p2 data-[xxx=foo]:(!m-2 p-2) data-[xxx=bar]:(!m-2 p-2) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "data-[xxx=(foo bar)]:(grid grid-cols-[1fr,50%])" 1`] = `
+"<div class="p1 data-[xxx=foo]:(grid grid-cols-[1fr,50%]) data-[xxx=bar]:(grid grid-cols-[1fr,50%]) m1" />
+<p class="p2 data-[xxx=foo]:(grid grid-cols-[1fr,50%]) data-[xxx=bar]:(grid grid-cols-[1fr,50%]) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "data-[xxx=(foo bar)]:(w-1/2 h-[calc(100%-4rem)])" 1`] = `
+"<div class="p1 data-[xxx=foo]:(w-1/2 h-[calc(100%-4rem) data-[xxx=bar]:(w-1/2 h-[calc(100%-4rem)]) m1" />
+<p class="p2 data-[xxx=foo]:(w-1/2 h-[calc(100%-4rem) data-[xxx=bar]:(w-1/2 h-[calc(100%-4rem)]) m2" />
+"
+`;
+
+exports[`references some special cases from UnoCSS > basic > "data-[xxx=(foo bar)]:(w-40vw pr-4.5rem)" 1`] = `
+"<div class="p1 data-[xxx=foo]:(w-40vw pr-4.5rem) data-[xxx=bar]:(w-40vw pr-4.5rem) m1" />
+<p class="p2 data-[xxx=foo]:(w-40vw pr-4.5rem) data-[xxx=bar]:(w-40vw pr-4.5rem) m2" />
+"
+`;
