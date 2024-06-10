@@ -34,6 +34,7 @@
     "prepublishOnly": "pnpm test && pnpm build"
   },
   "dependencies": {
+    "magic-string-stack": "^0.1.1",
     "unocss": "^0.60.3"
   },
   "devDependencies": {

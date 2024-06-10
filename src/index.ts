@@ -1,8 +1,11 @@
 import type MagicString from 'magic-string'
+import MagicStringStack from 'magic-string-stack'
 import type { SourceCodeTransformer } from 'unocss'
-import { defaultSplitRE, splitWithVariantGroupRE } from 'unocss'
 
-export function main(code: MagicString) {
+export function main(_code: MagicString) {
+
+  const code = new MagicStringStack(_code.toString())
+
   // no combinator
   code.replace(
     /(?<=class="[\s\S]*?)&\[([\s\S]+?)=\(([^)(]+?)\)(?=[\s\S]*?")/g,
@@ -39,6 +42,7 @@ export function main(code: MagicString) {
       }, [] as string[])
 
     code.replace(match[0], joinIt.join(' '))
+    code.commit()
   })
 
   return code.toString()

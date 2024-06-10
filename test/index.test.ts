@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import MagicString from 'magic-string'
+import MagicStringStack from 'magic-string-stack'
 import { main } from '../src'
 
-const m = (s: string, utility = true) => new MagicString(`<div class="p1 ${s}${utility ? ':flex' : ''} m1" />\n<p class="p2 ${s}${utility ? ':(border c-red)' : ''} m2" />\n`)
+const m = (s: string, utility = true) => new MagicStringStack(`<div class="p1 ${s}${utility ? ':flex' : ''} m1" />\n<p class="p2 ${s}${utility ? ':(border c-red)' : ''} m2" />\n`)
 
 describe('group attribute values', () => {
   it('basic', () => {
@@ -215,12 +215,13 @@ describe('group data-attribute values', () => {
     `)
   })
 
-  it.todo('multiple', () => {
+  it('multiple', () => {
     expect(
       main(m('data-[xxx=(foo bar)]:p2 data-[yyy=(aaa bbb)]:(m3 m4)', false)),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=foo]:p2 data-[xxx=bar]:p2 data-[yyy=aaa]:(m3 m4) data-[yyy=bbb]:(m3 m4) m2" />
-      <p class="p1 data-[xxx=(foo bar)]:p2 data-[yyy=(aaa bbb)]:(m3 m4) m2" />"
+      "<div class="p1 data-[xxx=foo]:p2 data-[xxx=bar]:p2 data-[yyy=aaa]:(m3 m4) data-[yyy=bbb]:(m3 m4) m1" />
+      <p class="p2 data-[xxx=foo]:p2 data-[xxx=bar]:p2 data-[yyy=aaa]:(m3 m4) data-[yyy=bbb]:(m3 m4) m2" />
+      "
     `)
   })
 

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      magic-string-stack:
+        specifier: ^0.1.1
+        version: 0.1.1
       unocss:
         specifier: ^0.60.3
         version: 0.60.3(postcss@8.4.33)(rollup@4.14.2)(vite@5.0.5)
@@ -1686,6 +1689,9 @@ packages:
   lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
+
+  magic-string-stack@0.1.1:
+    resolution: {integrity: sha512-TnOt1Dui/lM8Jrh7B+lGPPfNcczr6gUlFOJ8Calqs1KAuEn8NFab67vXz3F9cetX9YLJeQrEycjz2z0Wj90taw==}
 
   magic-string@0.30.10:
     resolution: {integrity: sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==}
@@ -4260,6 +4266,11 @@ snapshots:
   lru-cache@6.0.0:
     dependencies:
       yallist: 4.0.0
+
+  magic-string-stack@0.1.1:
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      magic-string: 0.30.10
 
   magic-string@0.30.10:
     dependencies:
