@@ -1,14 +1,39 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
     "lib": ["ESNext"],
-    "module": "ESNext",
+    "moduleDetection": "force",
+    "module": "preserve",
     "moduleResolution": "Bundler",
+    "paths": {
+      "@lvjx/vue-roll": [
+        "./src/index.ts"
+      ]
+    },
     "resolveJsonModule": true,
+    "allowJs": true,
     "strict": true,
     "strictNullChecks": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
     "esModuleInterop": true,
-    "skipDefaultLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "skipLibCheck": true
-  }
+  },
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.test.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "files": []
 }

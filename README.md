@@ -6,7 +6,7 @@
 pnpm add -D unocss-transformer-attribute-values-group
 ```
 
-# Usage:
+# Usage
 
 ```ts
 // uno.config.ts
@@ -14,23 +14,13 @@ import { defineConfig } from 'unocss'
 import transformerAttrValuesGroup from 'unocss-transformer-attribute-values-group'
 
 export default defineConfig({
-  // ...
   transformers: [
-    transformerAttrValuesGroup(),
+    transformerAttrValuesGroup,
   ],
 })
 ```
 
 ```vue
-<script setup lang="ts">
-const type = ref<'number' | 'text'>()
-const name = ref<'jack' | 'tom'>()
-
-function changeTypeAndName() {
-  // ......
-}
-</script>
-
 <template>
   <input
     :type="type"
@@ -49,7 +39,7 @@ transformed like:
 <div class="data-[name=jack]:c-red data-[name=tom]:c-red" />
 ```
 
-[tests](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/blob/main/tests/index.test.ts) for more details.
+[tests](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/blob/main/tests/index.test.ts) for more usages.
 
 # References
 

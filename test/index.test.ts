@@ -1,98 +1,92 @@
 import { describe, expect, it } from 'vitest'
 import MagicStringStack from 'magic-string-stack'
+import MagicString from 'magic-string'
 import { main } from '../src'
 
-const m = (s: string, utility = true) => new MagicStringStack(`<div class="p1 ${s}${utility ? ':flex' : ''} m1" />\n<p class="p2 ${s}${utility ? ':(border c-red)' : ''} m2" />\n`)
+const tags = ['h1', 'p']
+
+const classAttr = ['class', 'className']
+
+const prefix = 'p1'
+
+const suffix = 'm1'
+
+const singleUtilities = ['grid', 'w-1/2', 'grid-cols-[1fr,50%]', 'h-[calc(100%-4rem)]']
+
+const groupUtilities = ['(flex c-red)', '(w-1/2 grid-cols-[1fr,50%] h-[calc(100%-4rem)])']
+
+const cases = classAttr.reduce((acc, classA) => {
+  ;[...singleUtilities, ...groupUtilities].forEach((utility) => {
+    let one = ''
+    tags.forEach((tag) => {
+      one += `<${tag} ${classA}="${prefix} #variant#:${utility} ${suffix} " />\n`
+    })
+    acc.push(one)
+  })
+
+  return acc
+}, [] as string[])
+
+function genCases(opts: Partial<{
+  multipleInClass: boolean
+  newline: boolean
+}>) {
+  const { multipleInClass, newline } = opts
+
+  const variant = (utility: string) => {
+    const _utility = newline ? utility.split(' ').map(i => `${i}\n`).join('') : utility
+    return multipleInClass ? `#variant1#:${_utility} #variant2#:${_utility}` : `#variant#:${_utility}`
+  }
+
+  return classAttr.reduce((acc, classA) => {
+    ;[...singleUtilities, ...groupUtilities].forEach((utility) => {
+      let one = ''
+      tags.forEach(tag => one += `<${tag} ${classA}="${prefix} ${variant(utility)} ${suffix} " />\n`)
+      acc.push(one)
+    })
+
+    return acc
+  }, [] as string[])
+}
+
+function g(v: string | [string, string], genOpts?: Parameters<typeof genCases>[0]) {
+  let _cases = cases
+  if (genOpts) {
+    _cases = genCases(genOpts)
+  }
+
+  if (Array.isArray(v)) {
+    return _cases.map((i) => {
+      const source = i.replace(/#variant1#/g, v[0]).replace(/#variant2#/g, v[1])
+      const transformed = main(new MagicStringStack(source))
+      return `<!--\n${source}-->\n${transformed}`
+    }).join('\n\n')
+  }
+  else {
+    return _cases.map((i) => {
+      const source = i.replace(/#variant#/g, v)
+      const transformed = main(new MagicStringStack(source))
+      return `<!--\n${source}-->\n${transformed}`
+    }).join('\n\n')
+  }
+}
 
 describe('group attribute values', () => {
   it('basic', () => {
     expect(
-      main(m('[&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=number],&[type=text]]:flex m1" />
-      <p class="p2 [&[type=number],&[type=text]]:(border c-red) m2" />
-      "
-    `)
+      g('[&[type=(number text)]]'),
+    ).toMatchFileSnapshot('./assets/output/attribute/basic.html')
   })
 
   it('with operator', () => {
     expect(
-      main(m('[&[type^=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type^=number],&[type^=text]]:flex m1" />
-      <p class="p2 [&[type^=number],&[type^=text]]:(border c-red) m2" />
-      "
-    `)
+      g('[&[type^=(number text)]]'),
+    ).toMatchFileSnapshot('./assets/output/attribute/operator.html')
   })
 
-  it('with combinator', () => {
+  it('variant sorting', () => {
     expect(
-      // Next-sibling combinator
-      main(m('[.foo+&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo+&[type=number],.foo+&[type=text]]:flex m1" />
-      <p class="p2 [.foo+&[type=number],.foo+&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // Child combinator
-      main(m('[.foo>&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo>&[type=number],.foo>&[type=text]]:flex m1" />
-      <p class="p2 [.foo>&[type=number],.foo>&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // Column combinator
-      main(m('[.foo||&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo||&[type=number],.foo||&[type=text]]:flex m1" />
-      <p class="p2 [.foo||&[type=number],.foo||&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // Subsequent sibling combinator
-      main(m('[.foo~&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo~&[type=number],.foo~&[type=text]]:flex m1" />
-      <p class="p2 [.foo~&[type=number],.foo~&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // Descendant combinator
-      main(m('[.foo_&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo_&[type=number],.foo_&[type=text]]:flex m1" />
-      <p class="p2 [.foo_&[type=number],.foo_&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // Namespace separator
-      main(m('[.foo|&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo|&[type=number],.foo|&[type=text]]:flex m1" />
-      <p class="p2 [.foo|&[type=number],.foo|&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // a sequence of combinator
-      main(m('[.foo+&[type=(number text)]~.bar_.sim]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:flex m1" />
-      <p class="p2 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:(border c-red) m2" />
-      "
-    `)
-  })
-
-  it('multiple variant sorting', () => {
-    expect(
-      main(m('dark:hover:[&[type=(number text)]]')),
+      g('dark:hover:[&[type=(number text)]]'),
       // Note: UnoCSS can parse this result. but it doesn't seem good (The "number" has no `:hover`).
       // Just ignore it because it's too special.
       // /* layer: default */
@@ -119,199 +113,124 @@ describe('group attribute values', () => {
       //   --un-text-opacity: 1;
       //   color: rgb(248 113 113 / var(--un-text-opacity));
       // }
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 dark:hover:[&[type=number],&[type=text]]:flex m1" />
-      <p class="p2 dark:hover:[&[type=number],&[type=text]]:(border c-red) m2" />
-      "
-    `)
+    ).toMatchFileSnapshot('./assets/output/attribute/variant-sorting.html')
   })
 
-  it('compound class selectors', () => {
+  it('multiple in one class', () => {
     expect(
-      main(m('[.foo&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo&[type=number],.foo&[type=text]]:flex m1" />
-      <p class="p2 [.foo&[type=number],.foo&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      main(m('[.foo&[type=(number text)].bar]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo&[type=number].bar,.foo&[type=text].bar]:flex m1" />
-      <p class="p2 [.foo&[type=number].bar,.foo&[type=text].bar]:(border c-red) m2" />
-      "
-    `)
+      g(['[&[type=(number text)]]', '[&[size=(large small middle)]]'], { multipleInClass: true }),
+    ).toMatchFileSnapshot('./assets/output/attribute/in-one-class.html')
   })
 
-  it('multiple', () => {
+  it('multiple in one arbitrary-variants', () => {
     expect(
-      main(m('[&[type=(number text)]]:c-red [&[size=(large small middle)]]:(border flex)', false)),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=number],&[type=text]]:c-red [&[size=large],&[size=small],&[size=middle]]:(border flex) m1" />
-      <p class="p2 [&[type=number],&[type=text]]:c-red [&[size=large],&[size=small],&[size=middle]]:(border flex) m2" />
-      "
-    `)
-  })
-
-  it('multiple in the same arbitrary-variants', () => {
-    expect(
-      main(m('[&[type=(number text)],&[name=(aa bb cc)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc]]:flex m1" />
-      <p class="p2 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc]]:(border c-red) m2" />
-      "
-    `)
+      g('[&[type=(number text)],&[name=(aa bb cc)],&[age=(1 2)]]'),
+    ).toMatchFileSnapshot('./assets/output/attribute/in-one-arbitrary-variants.html')
   })
 
   it('with newline', () => {
+    // keep values newline
     expect(
-      main(m('[&[type=(number\n  text)],&[aa=(aa  bb cc)]]:(\n  c-red \n     m-1\n     p-1\n  )', false)),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=number],&[type=text],&[aa=aa],&[aa=bb],&[aa=cc]]:(
-        c-red 
-           m-1
-           p-1
-        ) m1" />
-      <p class="p2 [&[type=number],&[type=text],&[aa=aa],&[aa=bb],&[aa=cc]]:(
-        c-red 
-           m-1
-           p-1
-        ) m2" />
-      "
-    `)
+      g('[&[type=(number\n  text)],&[aa=(aa  bb\n cc)]]'),
+    ).toMatchFileSnapshot('./assets/output/attribute/newline.html')
   })
 
   it('empty group', () => {
     expect(
-      main(m('[&[type=()]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=()]]:flex m1" />
-      <p class="p2 [&[type=()]]:(border c-red) m2" />
-      "
-    `)
+      g('[&[type=()]]'),
+    ).toMatchFileSnapshot('./assets/output/attribute/empty-group.html')
+  })
+
+  it('with data-attr', () => {
+    expect(
+      g('[&[data-active=(true false)]]'),
+    ).toMatchFileSnapshot('./assets/output/attribute/data-attr.html')
+  })
+})
+
+describe('with pre/suf-fix combinator', () => {
+  it('prefix', () => {
+    expect(
+      g('[.foo+&[type=(number text)]]'),
+    ).toMatchFileSnapshot('./assets/output/attribute-combinator/prefix.html')
+  })
+
+  it('suffix', () => {
+    expect(
+      g('[&[type=(number text)]~.bar_.sim]'),
+    ).toMatchFileSnapshot('./assets/output/attribute-combinator/suffix.html')
+  })
+
+  it('pre/suf-fix', () => {
+    expect(
+      g('[.foo+&[type=(number text)]~.bar_.sim]'),
+    ).toMatchFileSnapshot('./assets/output/attribute-combinator/prefix-suffix.html')
+  })
+
+  it('multiple', () => {
+    expect(
+      g(['[.foo+&[type=(number text)]~.bar_.sim]', '[.foo+&[type=(number text)]~.bar_.sim]'], { multipleInClass: true }),
+    ).toMatchFileSnapshot('./assets/output/attribute-combinator/multiple.html')
+  })
+
+  it('multiple in the one arbitrary-variants', () => {
+    expect(
+      g('[.foo+&[type=(number text)]~.bar_.sim,.fxx+&[type=(number text)]~.bxx_.sxx]'),
+    ).toMatchFileSnapshot('./assets/output/attribute-combinator/in-one-arbitrary-variants.html')
   })
 })
 
 describe('group data-attribute values', () => {
   it('basic', () => {
     expect(
-      // data-[xxx=foo]:aaa data-[xxx=bar]:(aaa bbb)
-      main(m('data-[xxx=(foo bar)]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=foo]:flex data-[xxx=bar]:flex m1" />
-      <p class="p2 data-[xxx=foo]:(border c-red) data-[xxx=bar]:(border c-red) m2" />
-      "
-    `)
+      g('data-[xxx=(foo bar)]'),
+    ).toMatchFileSnapshot('./assets/output/data-attr/basic.html')
   })
 
   it('with operator', () => {
     expect(
-      main(m('data-[xxx^=(foo bar)]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx^=foo]:flex data-[xxx^=bar]:flex m1" />
-      <p class="p2 data-[xxx^=foo]:(border c-red) data-[xxx^=bar]:(border c-red) m2" />
-      "
-    `)
+      g('data-[xxx^=(foo bar)]'),
+    ).toMatchFileSnapshot('./assets/output/data-attr/operator.html')
   })
 
-  it('multiple', () => {
+  it('multiple in one class', () => {
     expect(
-      main(m('data-[xxx=(foo bar)]:p2 data-[yyy=(aaa bbb)]:(m3 m4)', false)),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=foo]:p2 data-[xxx=bar]:p2 data-[yyy=aaa]:(m3 m4) data-[yyy=bbb]:(m3 m4) m1" />
-      <p class="p2 data-[xxx=foo]:p2 data-[xxx=bar]:p2 data-[yyy=aaa]:(m3 m4) data-[yyy=bbb]:(m3 m4) m2" />
-      "
-    `)
+      g(['data-[xxx=(foo bar)]', 'data-[yyy=(aaa bbb)]'], { multipleInClass: true }),
+    ).toMatchFileSnapshot('./assets/output/data-attr/in-one-class.html')
   })
 
-  it('multiple variant sorting', () => {
+  it('variant sorting', () => {
     expect(
-      main(m('dark:hover:data-[xxx=(foo bar)]:c-red', false)),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 dark:hover:data-[xxx=foo]:c-red dark:hover:data-[xxx=bar]:c-red m1" />
-      <p class="p2 dark:hover:data-[xxx=foo]:c-red dark:hover:data-[xxx=bar]:c-red m2" />
-      "
-    `)
-    expect(
-      main(m('dark:hover:data-[xxx=(foo bar)]:(c-red border)', false)),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 dark:hover:data-[xxx=foo]:(c-red border) dark:hover:data-[xxx=bar]:(c-red border) m1" />
-      <p class="p2 dark:hover:data-[xxx=foo]:(c-red border) dark:hover:data-[xxx=bar]:(c-red border) m2" />
-      "
-    `)
+      g('dark:hover:data-[xxx=(foo bar)]'),
+    ).toMatchFileSnapshot('./assets/output/data-attr/variant-sorting.html')
   })
 
   it('with newline', () => {
     expect(
-      main(m('data-[xxx=(foo\n bar)]:(\n  c-red \n     m-1\n     p-1\n  )', false)),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=foo]:(
-        c-red 
-           m-1
-           p-1
-        ) data-[xxx=bar]:(
-        c-red 
-           m-1
-           p-1
-        ) m1" />
-      <p class="p2 data-[xxx=foo]:(
-        c-red 
-           m-1
-           p-1
-        ) data-[xxx=bar]:(
-        c-red 
-           m-1
-           p-1
-        ) m2" />
-      "
-    `)
+      g('data-[xxx=(foo\n bar)]', { newline: true }),
+    ).toMatchFileSnapshot('./assets/output/data-attr/newline.html')
   })
 
   it('empty', () => {
     expect(
-      main(m('data-[xxx=()]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 data-[xxx=()]:flex m1" />
-      <p class="p2 data-[xxx=()]:(border c-red) m2" />
-      "
-    `)
+      g('data-[xxx=()]'),
+    ).toMatchFileSnapshot('./assets/output/data-attr/empty.html')
   })
 })
 
-describe('random combination', () => {
-  it('combination 1', () => expect(
-    main(m('data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1', false)),
-  ).toMatchInlineSnapshot(`
-    "<div class="p1 data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1) data-[yyy=aa]:p-1 m1" />
-    <p class="p2 data-[xxx=foo]:(p-1 m-1) data-[xxx=bar]:(p-1 m-1) data-[yyy=aa]:p-1 m2" />
-    "
-  `))
+describe('any combinations', () => {
+  it('any 1', () => expect(
+    main(new MagicString('<i class="data-[xxx=(foo bar)]:(p-1 m-1) data-[yyy=(aa)]:p-1" />')),
+  ).toMatchSnapshot())
 
-  it('combination 2', () => {
-    expect(main(m('[&[type=(number text)]]:c-red data-[xxx=(foo bar)]:p-1', false)))
-      .toMatchInlineSnapshot(`
-        "<div class="p1 [&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1 data-[xxx=bar]:p-1 m1" />
-        <p class="p2 [&[type=number],&[type=text]]:c-red data-[xxx=foo]:p-1 data-[xxx=bar]:p-1 m2" />
-        "
-      `)
-
-    expect(main(m('data-[xxx=(foo bar)]:(border flex) [&[type=(number text)]]:c-red', false)))
-      .toMatchInlineSnapshot(`
-        "<div class="p1 data-[xxx=foo]:(border flex) data-[xxx=bar]:(border flex) [&[type=number],&[type=text]]:c-red m1" />
-        <p class="p2 data-[xxx=foo]:(border flex) data-[xxx=bar]:(border flex) [&[type=number],&[type=text]]:c-red m2" />
-        "
-      `)
-  })
-
-  it('with grouping selector and combinator', () => {
+  it('any 2', () => {
     expect(
-      main(m('[.foo,&[type=(number text)]~.bar]:c-red', false)),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo,&[type=number]~.bar,.foo,&[type=text]~.bar]:c-red m1" />
-      <p class="p2 [.foo,&[type=number]~.bar,.foo,&[type=text]~.bar]:c-red m2" />
-      "
-    `)
+      main(new MagicString('<i class="[&[type=(number text)]]:c-red data-[xxx=(foo bar)]:p-1" />')),
+    ).toMatchSnapshot()
+
+    expect(
+      main(new MagicString('<i class="data-[xxx=(foo bar)]:(border flex) [&[type=(number text)]]:c-red" />')),
+    ).toMatchSnapshot()
   })
 })
 
@@ -336,15 +255,15 @@ describe('references some special cases from UnoCSS', () => {
       '[&[type=(number text)]]:(!m-2 p-2)',
       'data-[xxx=(foo bar)]:(!m-2 p-2)',
       '[&[type=(number text)]]:(w-1/2 h-[calc(100%-4rem)])',
-      'data-[xxx=(foo bar)]:(w-1/2 h-[calc(100%-4rem)])', // TODO fail
+      'data-[xxx=(foo bar)]:(w-1/2 h-[calc(100%-4rem)])',
       '[&[type=(number text)]]:(\n!m-2 \np-2\n)',
       'data-[xxx=(foo bar)]:(\n!m-2 \np-2\n)',
       // '[&]:(w-4 h-4) [&]:(w-4 h-4)',
     ]
 
     for (const c of cases) {
-      const result = main(m(c, false))
-      expect(result).toMatchSnapshot(`"${c}"`)
+      const result = main(new MagicString(`<i class="${c}" />`))
+      expect(result).toMatchSnapshot()
     }
   })
 })

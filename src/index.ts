@@ -5,35 +5,27 @@ import type { SourceCodeTransformer } from 'unocss'
 export function main(_code: MagicString) {
   const code = new MagicStringStack(_code.toString())
 
-  // no combinator
-  code.replace(
-    /(?<=class="[\s\S]*?)&\[([\s\S]+?)=\(([^)(]+?)\)(?=[\s\S]*?")/g,
-    (_match, variant: string, values: string) => values
-      .split(/\s+/g)
-      .filter(Boolean)
-      .map((value, idx, arr) => `&[${variant}=${value}${arr.length - 1 === idx ? '' : ']'}`)
-      .join(','),
+  // group attribute values
+  code.replaceAll(
+    /([^,[]*?&\[\S+?=)\(([^)]+)\)(\][^,\]]*)/g,
+    (_match, pre: string, values: string, suf: string) => {
+      const preComma = _match.startsWith(',') ? ',' : ''
+
+      return `${preComma}${values
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((value, _idx, _arr) => `${pre}${value}${suf}`)
+        .join(',')}`
+    },
   )
 
-  // with combinator
-  code.replace(
-    /(?<=class="[\s\S]*?)\[(\S+?)&\[([\s\S]+?)=\(([\s\S]+?)\)\](\S*?)\](?=[\s\S]*?")/g,
-    (_match, combinatorAhead: string, variant: string, values: string, combinatorBehind: string) => `${values
-      .split(/\s+/g)
-      .filter(Boolean)
-      .map((value, idx, arr) => {
-        return `${idx === 0 ? '[' : ''}${combinatorAhead}&[${variant}=${value}${combinatorBehind ? `]${combinatorBehind}` : (arr.length - 1 === idx ? '' : ']')}`
-      })
-      .join(',')}]${combinatorBehind ? '' : ']'}`,
-  )
-
-  // data-attribute
-  const matches = code.toString().matchAll(/(?<=class="[\s\S]*?)(\S+:)*?data-\[\S+=\((?<values>[^\)]+)\)\]:([^(]\S+|\([^\)]+\))(?=[\s\S]*?")/g)
+  // group data-attribute values
+  const matches = code.toString().matchAll(/[^="\s]*data-\[\S+=\((?<values>[^)]+)\)\]:(?:[^(]\S+|\([^<>=]+\))/gi)
   ;[...matches].forEach((match) => {
-    const values = match?.groups?.values as unknown as string
+    const values = match?.groups?.values as string
 
     const joinIt = values
-      ?.split(/\s/g)
+      ?.split(/\s/)
       .filter(Boolean)
       .reduce((acc, value, _idx) => {
         acc.push(match[0].replaceAll(`(${values})`, value))
