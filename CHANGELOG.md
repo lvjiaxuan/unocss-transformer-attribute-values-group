@@ -1,6 +1,19 @@
 # Changelog
 
-Tag ranges `v0.1.0...v0.2.5` (12). [All GitHub Releases](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/releases).
+Tag ranges `v0.1.0...v0.3.0` (13). [All GitHub Releases](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/releases).
+
+## v0.3.0 <sub>(2024-06-10)</sub>
+[Compare changes](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/compare/v0.2.5...v0.3.0)
+
+### &nbsp;&nbsp;&nbsp;✨ Enhancements
+
+- with single combinator is ok &nbsp;-&nbsp; by @lvjiaxuan [<samp>(cd15f)</samp>](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/commit/cd15f77)
+- support serial combinator and compound class selectors &nbsp;-&nbsp; by @lvjiaxuan [<samp>(13ace)</samp>](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/commit/13acedc)
+- support a test that is powered by `magic-string-stack`. &nbsp;-&nbsp; by @lvjiaxuan [<samp>(0ea5a)</samp>](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/commit/0ea5a1d)
+
+### &nbsp;&nbsp;&nbsp;🐛 Fixes
+
+- cant reassigned `magic-string` instance. &nbsp;-&nbsp; by @lvjiaxuan in [#1](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/issues/1) [<samp>(5242a)</samp>](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/commit/5242aec)
 
 ## v0.2.5 <sub>(2024-02-03)</sub>
 [Compare changes](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/compare/v0.2.4...v0.2.5)
