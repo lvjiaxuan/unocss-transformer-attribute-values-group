@@ -39,7 +39,8 @@
     "unocss": "^0.61.7"
   },
   "devDependencies": {
-    "@lvjiaxuan/eslint-config": "^1.11.0",
+    "@lvjiaxuan/eslint-config": "^1.12.0",
+    "@types/node": "^22.0.2",
     "eslint": "^9.8.0",
     "magic-string": "^0.30.11",
     "tsup": "^8.2.3",
