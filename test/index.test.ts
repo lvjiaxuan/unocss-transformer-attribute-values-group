@@ -25,89 +25,6 @@ describe('group attribute values', () => {
     `)
   })
 
-  it('with combinator', () => {
-    expect(
-      // 1. Next-sibling combinator
-      main(m('[.foo+&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo+&[type=number],.foo+&[type=text]]:flex m1" />
-      <p class="p2 [.foo+&[type=number],.foo+&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // 2. Child combinator
-      main(m('[.foo>&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo>&[type=number],.foo>&[type=text]]:flex m1" />
-      <p class="p2 [.foo>&[type=number],.foo>&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // 3. Column combinator
-      main(m('[.foo||&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo||&[type=number],.foo||&[type=text]]:flex m1" />
-      <p class="p2 [.foo||&[type=number],.foo||&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // 4. Subsequent sibling combinator
-      main(m('[.foo~&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo~&[type=number],.foo~&[type=text]]:flex m1" />
-      <p class="p2 [.foo~&[type=number],.foo~&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // 5. Descendant combinator
-      main(m('[.foo_&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo_&[type=number],.foo_&[type=text]]:flex m1" />
-      <p class="p2 [.foo_&[type=number],.foo_&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // 6. Namespace separator
-      main(m('[.foo|&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo|&[type=number],.foo|&[type=text]]:flex m1" />
-      <p class="p2 [.foo|&[type=number],.foo|&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    expect(
-      // 7. a sequence of combinator
-      main(m('[.foo+&[type=(number text)]~.bar_.sim]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:flex m1" />
-      <p class="p2 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:(border c-red) m2" />
-      "
-    `)
-
-    // compound class selectors
-    expect(
-      main(m('[.foo&[type=(number text)]]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo&[type=number],.foo&[type=text]]:flex m1" />
-      <p class="p2 [.foo&[type=number],.foo&[type=text]]:(border c-red) m2" />
-      "
-    `)
-
-    // compound class selectors
-    expect(
-      main(m('[.foo&[type=(number text)].bar]')),
-    ).toMatchInlineSnapshot(`
-      "<div class="p1 [.foo&[type=number].bar,.foo&[type=text].bar]:flex m1" />
-      <p class="p2 [.foo&[type=number].bar,.foo&[type=text].bar]:(border c-red) m2" />
-      "
-    `)
-  })
-
   it('multiple variant sorting', () => {
     expect(
       main(m('dark:hover:[&[type=(number text)]]')),
@@ -156,15 +73,15 @@ describe('group attribute values', () => {
 
   it('multiple in the one arbitrary-variants', () => {
     expect(
-      main(m('[&[type=(number text)],&[name=(aa bb cc)]]')),
+      main(m('[&[type=(number text)],&[name=(aa bb cc)],&[age=(1 2)]]')),
     ).toMatchInlineSnapshot(`
-      "<div class="p1 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc]]:flex m1" />
-      <p class="p2 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc]]:(border c-red) m2" />
+      "<div class="p1 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc],&[age=1],&[age=2]]:flex m1" />
+      <p class="p2 [&[type=number],&[type=text],&[name=aa],&[name=bb],&[name=cc],&[age=1],&[age=2]]:(border c-red) m2" />
       "
     `)
   })
 
-  it.only('with newline', () => {
+  it('with newline', () => {
     expect(
       main(m('[&[type=(number\n  text)],&[aa=(aa  bb cc)]]:(\n  c-red \n     m-1\n     p-1\n  )', false)),
     ).toMatchInlineSnapshot(`
@@ -188,6 +105,68 @@ describe('group attribute values', () => {
     ).toMatchInlineSnapshot(`
       "<div class="p1 [&[type=()]]:flex m1" />
       <p class="p2 [&[type=()]]:(border c-red) m2" />
+      "
+    `)
+  })
+
+  it('with data-attr', () => {
+    expect(
+      main(m('[&[data-active=(true false)]]')),
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 [&[data-active=true],&[data-active=false]]:flex m1" />
+      <p class="p2 [&[data-active=true],&[data-active=false]]:(border c-red) m2" />
+      "
+    `)
+  })
+})
+
+describe('with pre/suf-fix combinator', () => {
+  it('prefix', () => {
+    expect(
+      main(m('[.foo+&[type=(number text)]]')),
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 [.foo+&[type=number],.foo+&[type=text]]:flex m1" />
+      <p class="p2 [.foo+&[type=number],.foo+&[type=text]]:(border c-red) m2" />
+      "
+    `)
+  })
+
+  it('suffix', () => {
+    expect(
+      main(m('[&[type=(number text)]~.bar_.sim]')),
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 [&[type=number]~.bar_.sim,&[type=text]~.bar_.sim]:flex m1" />
+      <p class="p2 [&[type=number]~.bar_.sim,&[type=text]~.bar_.sim]:(border c-red) m2" />
+      "
+    `)
+  })
+
+  it('pre/suf-fix', () => {
+    expect(
+      main(m('[.foo+&[type=(number text)]~.bar_.sim]')),
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:flex m1" />
+      <p class="p2 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:(border c-red) m2" />
+      "
+    `)
+  })
+
+  it('multiple', () => {
+    expect(
+      main(m('[.foo+&[type=(number text)]~.bar_.sim]:c-red [.foo+&[type=(number text)]~.bar_.sim]:(border flex)', false)),
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:c-red [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:(border flex) m1" />
+      <p class="p2 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:c-red [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim]:(border flex) m2" />
+      "
+    `)
+  })
+
+  it('multiple in the one arbitrary-variants', () => {
+    expect(
+      main(m('[.foo+&[type=(number text)]~.bar_.sim,.fxx+&[type=(number text)]~.bxx_.sxx]:(border flex)', false)),
+    ).toMatchInlineSnapshot(`
+      "<div class="p1 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim,.fxx+&[type=number]~.bxx_.sxx,.fxx+&[type=text]~.bxx_.sxx]:(border flex) m1" />
+      <p class="p2 [.foo+&[type=number]~.bar_.sim,.foo+&[type=text]~.bar_.sim,.fxx+&[type=number]~.bxx_.sxx,.fxx+&[type=text]~.bxx_.sxx]:(border flex) m2" />
       "
     `)
   })

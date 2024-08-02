@@ -5,15 +5,27 @@ import type { SourceCodeTransformer } from 'unocss'
 export function main(_code: MagicString) {
   const code = new MagicStringStack(_code.toString())
 
-  // no combinator
   code.replaceAll(
-    /([,[])(\S*?)&\[(\S*?)=\s*\(([^()]+)\)\s*\](\S*?)([,\]])/g,
-    (_match, prefix = '', preCombinator = '', attr: string, values: string, sufCombinator = '', suffix = '') => `${prefix}${values
-      .split(/\s+/)
-      .filter(Boolean)
-      .map((value, _idx, _arr) => `${preCombinator}&[${attr}=${value}]${sufCombinator}`)
-      .join(',')}${suffix}`,
+    /(,?[^[,]*?&\[\S+?=)\(([^()]+)\)(\][^,\]]*)/g,
+    (_match, pre: string, values: string, suf: string) => {
+      const preComma = _match.startsWith(',') ? ',' : ''
+
+      return `${preComma}${values
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((value, _idx, _arr) => `${pre.startsWith(',') ? pre.slice(1) : pre}${value}${suf}`)
+        .join(',')}`
+    },
   )
+  // no combinator
+  // code.replaceAll(
+  //   /&\[(\S*?)=\s*\(([^()]+)\)\s*\]/g,
+  //   (_match, attr: string, values: string) => `${values
+  //     .split(/\s+/)
+  //     .filter(Boolean)
+  //     .map((value, _idx, _arr) => `&[${attr}=${value}]`)
+  //     .join(',')}`,
+  // )
 
   // with combinator
   // code.replace(
