@@ -1,7 +1,7 @@
 {
   "name": "unocss-transformer-attribute-values-group",
   "type": "module",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": false,
   "packageManager": "pnpm@9.8.0",
   "description": "Attribute values group transformer for UnoCSS.",
