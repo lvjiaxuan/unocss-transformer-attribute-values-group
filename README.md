@@ -39,7 +39,7 @@ transformed like:
 <div class="data-[name=jack]:c-red data-[name=tom]:c-red" />
 ```
 
-[tests](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/blob/main/tests/index.test.ts) for more usages.
+[tests](https://github.com/lvjiaxuan/unocss-transformer-attribute-values-group/blob/main/test/index.test.ts) for more usages.
 
 # References
 
